@@ -1,0 +1,14 @@
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "test",
+  "password": "test",
+  "database": "salesapp",
+  "entities": ["dist/**/*.model{.js,.ts}"],
+  "synchronize": false,
+  "migrations": ["migration/*.js"],
+  "cli": {
+    "migrationsDir": "migration"
+  }
+}
