@@ -1,10 +1,27 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ProductsModule } from './products/products.module';
 
 @Module({
-  imports: [],
+  imports: [
+    ProductsModule,
+    GraphQLModule.forRoot({
+      // debug: false,
+      // playground: false,
+      autoSchemaFile: true, //In the code first approach, you use decorators and TypeScript classes to generate the corresponding GraphQL schema.
+      //autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+    }),
+  ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    // Below is IOC container in NestJS
+    // {
+    //   provide: Interface,
+    //   useClass: Implementation,
+    // },
+  ],
 })
 export class AppModule {}
