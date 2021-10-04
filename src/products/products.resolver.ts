@@ -1,5 +1,6 @@
 import {
   Args,
+  Int,
   Mutation,
   Parent,
   Query,
@@ -17,13 +18,13 @@ export class ProductsResolver {
   @Query((returns) => Product, { name: 'product' }) // param => supply a parent object used by field resolver functions as they traverse down through an object graph
   async getProduct(@Args('id') id: string) {
     // args can be called multiple times, and seperated into a seperate file to avoid bloating
-    return { id, name: 'TV', price: 5000 } as Product;
+    return this.productService.findOne(id);
   }
 
   @Mutation((returns) => Product)
   async createProduct(
     @Args('name') name: string,
-    @Args('price') price: number,
+    @Args({ name: 'price', type: () => Int }) price: number,
   ): Promise<Product> {
     return await this.productService.create({ name, price });
   }
