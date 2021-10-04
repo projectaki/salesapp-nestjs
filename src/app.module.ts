@@ -4,10 +4,13 @@ import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ProductsModule } from './products/products.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { BaseScrapersService } from './scrapers/base-scrapers.service';
+import { ScrapersModule } from './scrapers/scrapers.module';
 
 @Module({
   imports: [
     ProductsModule,
+    ScrapersModule,
     GraphQLModule.forRoot({
       // debug: false,
       // playground: false,
