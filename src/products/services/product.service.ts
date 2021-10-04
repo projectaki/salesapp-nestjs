@@ -10,7 +10,7 @@ export class ProductService {
     private productRepository: Repository<Product>,
   ) {}
 
-  create = (product: any): Promise<Product> => {
+  create = (product: Product): Promise<Product> => {
     return this.productRepository.save(product);
   };
 

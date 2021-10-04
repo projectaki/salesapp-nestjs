@@ -26,7 +26,13 @@ export class ProductsResolver {
     @Args('name') name: string,
     @Args({ name: 'price', type: () => Int }) price: number,
   ): Promise<Product> {
-    return await this.productService.create({ name, price });
+    return await this.productService.create({
+      id: null,
+      name,
+      price,
+      created_at: null,
+      updated_at: null,
+    });
   }
 
   //   @ResolveField('children', (returns) => [{ name: string, productId: number }])
