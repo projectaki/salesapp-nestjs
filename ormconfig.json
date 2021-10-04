@@ -2,12 +2,12 @@
   "type": "postgres",
   "host": "localhost",
   "port": 5432,
-  "username": "test",
-  "password": "test",
+  "username": "postgres",
+  "password": "1234",
   "database": "salesapp",
-  "entities": ["dist/**/*.model{.js,.ts}"],
+  "entities": ["dist/**/*.model.{js,ts}"],
   "synchronize": false,
-  "migrations": ["migration/*.js"],
+  "migrations": ["dist/migration/*.{js,ts}"],
   "cli": {
     "migrationsDir": "migration"
   }
