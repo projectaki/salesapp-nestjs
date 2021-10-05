@@ -1,4 +1,5 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
+import { BaseModel } from 'src/shared/models/base-model';
 import {
   Column,
   CreateDateColumn,
@@ -9,15 +10,7 @@ import {
 
 @ObjectType()
 @Entity()
-export class Product {
-  @Field()
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
-  @Field()
-  @Column({ length: 500, nullable: false })
-  name: string;
-
+export class Product extends BaseModel {
   @Field((type) => Int)
   @Column()
   price: number;
