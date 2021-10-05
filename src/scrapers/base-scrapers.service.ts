@@ -1,10 +1,8 @@
-import { Injectable } from '@nestjs/common';
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 
-@Injectable()
 export class BaseScrapersService {
-  getHtml = async (url: string): Promise<string> => {
+  async getHtml(url: string): Promise<string> {
     const browser = await puppeteer.use(StealthPlugin()).launch({
       headless: true,
     });
@@ -18,5 +16,5 @@ export class BaseScrapersService {
     const html = await page.content(); // serialized HTML of page DOM.
     await browser.close();
     return html;
-  };
+  }
 }

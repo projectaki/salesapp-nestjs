@@ -14,9 +14,17 @@ export class ProductService {
     return this.productRepository.save(product);
   };
 
-  findOne(id: string): Promise<Product> {
+  update = (product: Product): Promise<Product> => {
+    return this.productRepository.save(product);
+  };
+
+  find(id: string): Promise<Product> {
     return this.productRepository.findOne(id);
   }
+
+  remove = (product: Product): Promise<Product> => {
+    return this.productRepository.remove(product);
+  };
 }
 
 // Below is how to make a transaction

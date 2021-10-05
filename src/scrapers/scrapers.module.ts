@@ -4,5 +4,6 @@ import { ElgigantenScraperService } from './elgiganten-scraper/elgiganten-scrape
 
 @Module({
   providers: [BaseScrapersService, ElgigantenScraperService],
+  exports: [ElgigantenScraperService],
 })
 export class ScrapersModule {}

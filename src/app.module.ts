@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ProductsModule } from './products/products.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -23,7 +22,6 @@ import { SharedModule } from './shared/shared.module';
   ],
   controllers: [AppController],
   providers: [
-    AppService,
     // Below is IOC container in NestJS
     // {
     //   provide: Interface,
