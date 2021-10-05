@@ -6,6 +6,7 @@ import { ProductsModule } from './products/products.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BaseScrapersService } from './scrapers/base-scrapers.service';
 import { ScrapersModule } from './scrapers/scrapers.module';
+import { SharedModule } from './shared/shared.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ScrapersModule } from './scrapers/scrapers.module';
       //autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
     TypeOrmModule.forRoot(),
+    SharedModule,
   ],
   controllers: [AppController],
   providers: [
