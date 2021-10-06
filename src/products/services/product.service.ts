@@ -25,6 +25,23 @@ export class ProductService {
   remove = (product: Product): Promise<Product> => {
     return this.productRepository.remove(product);
   };
+
+  processProducts = async (products: Product[]) => {
+    for (const product of products) {
+      const oldProduct = await this.productRepository.findOne({
+        name: product.name,
+      });
+      if (!oldProduct) {
+        await this.productRepository.save(product);
+      } else {
+        const updatedProduct = { ...oldProduct, ...product };
+        await this.productRepository.save(updatedProduct);
+        if (product.price < oldProduct.price) {
+          // put event in queue that the product has had a price reduction
+        }
+      }
+    }
+  };
 }
 
 // Below is how to make a transaction
