@@ -1,12 +1,18 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { ProductService } from './products/services/product.service';
+import { ElgigantenScraperService } from './scrapers/elgiganten-scraper/elgiganten-scraper.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly scraperService: ElgigantenScraperService,
+    private readonly productService: ProductService,
+  ) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Get('/run')
+  async fetchProducts(): Promise<string> {
+    const products = await this.scraperService.getProducts();
+    //products.forEach((x) => this.productService.create(x));
+    return 'Inserted';
   }
 }
