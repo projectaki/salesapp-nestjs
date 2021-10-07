@@ -6,6 +6,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { BaseScrapersService } from './scrapers/base-scrapers.service';
 import { ScrapersModule } from './scrapers/scrapers.module';
 import { SharedModule } from './shared/shared.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { TaskSchedulerModule } from './task-scheduler/task-scheduler.module';
 
 @Module({
   imports: [
@@ -18,7 +20,9 @@ import { SharedModule } from './shared/shared.module';
       //autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
     TypeOrmModule.forRoot(),
+    ScheduleModule.forRoot(),
     SharedModule,
+    TaskSchedulerModule,
   ],
   controllers: [AppController],
   providers: [
