@@ -18,20 +18,18 @@ export class ElgigantenScraperService extends BaseScrapersService {
   private _getAllProductsFunc = async (page: Page): Promise<Product[]> => {
     let products = [];
     let url = config.elgiganten;
-    let pageNumber = 2;
+    let pageNumber = 1;
     while (true) {
-      console.log(pageNumber);
       // networkidle property wait until no more network calls are made
       await page.goto(url, { waitUntil: 'networkidle0' });
       const html = await page.content(); // serialized HTML of page DOM.
       const $ = cheerio.load(html);
       const pageHasProducts = $('.product-tile').length > 0;
-      console.log($('.product-tile').length);
-      console.log(pageHasProducts);
       if (!pageHasProducts) break;
       const tempProducts = await this._getProductsFromPage($);
+      console.log(url, pageNumber);
       products = [...products, ...tempProducts];
-      url = config.elgiganten + `/page-${pageNumber++}`;
+      url = config.elgiganten + `/page-${++pageNumber}`;
     }
 
     return products;
