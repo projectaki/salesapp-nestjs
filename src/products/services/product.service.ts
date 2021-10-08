@@ -27,7 +27,13 @@ export class ProductService {
   };
 
   processProducts = async (products: Product[]) => {
-    for (const product of products) {
+    const set = new Set();
+    const uniqueProducts = products.filter((x) => {
+      const predicate = !set.has(x.name);
+      set.add(x.name);
+      return predicate;
+    });
+    for (const product of uniqueProducts) {
       const oldProduct = await this.productRepository.findOne({
         name: product.name,
       });
