@@ -7,8 +7,8 @@
   "database": "salesapp",
   "entities": ["dist/**/*.model.{js,ts}"],
   "synchronize": false,
-  "migrations": ["dist/migration/*.{js,ts}"],
+  "migrations": ["dist/database/migration/*.{js,ts}"],
   "cli": {
-    "migrationsDir": "migration"
+    "migrationsDir": "src/database/migration"
   }
 }
