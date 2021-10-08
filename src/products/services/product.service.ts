@@ -35,12 +35,13 @@ export class ProductService {
         await this.productRepository.save(product);
       } else {
         const updatedProduct = { ...oldProduct, ...product };
-        await this.productRepository.save(updatedProduct);
         if (product.price < oldProduct.price) {
-          // put event in queue that the product has had a price reduction
+          await this.productRepository.save(updatedProduct);
+          console.log('Price changed', oldProduct, updatedProduct);
         }
       }
     }
+    console.log('All inserted');
   };
 }
 
