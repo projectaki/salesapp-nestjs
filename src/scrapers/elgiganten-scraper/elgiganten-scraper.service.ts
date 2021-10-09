@@ -9,17 +9,18 @@ import { Queue } from 'bull';
 
 @Injectable()
 export class ElgigantenScraperService extends BaseScrapersService {
-  constructor(@InjectQueue('product-queue') private productQueue: Queue) {
+  constructor() {
     super();
   }
 
-  processAllProducts = async (): Promise<void> => {
-    super.browserSession(this._traverseAllDiscountProductsFunc);
+  getAllPRoducts = async (): Promise<Product[]> => {
+    return super.browserSession(this._traverseAllDiscountProductsFunc);
   };
 
   private _traverseAllDiscountProductsFunc = async (
     page: Page,
-  ): Promise<void> => {
+  ): Promise<Product[]> => {
+    const products = [];
     let url = config.elgiganten;
     let pageNumber = 1;
     const set = new Set();
@@ -30,16 +31,17 @@ export class ElgigantenScraperService extends BaseScrapersService {
       const $ = cheerio.load(html);
       const pageHasProducts = $('.product-tile').length > 0;
       if (!pageHasProducts) break;
-      const products = await this._getProductsFromPage($);
-      products.forEach((x) => {
+      const currentProducts = await this._getProductsFromPage($);
+      currentProducts.forEach((x) => {
         if (!set.has(x.name)) {
-          this.productQueue.add('product', { ...new Product(), ...x });
+          products.push(x);
           set.add(x.name);
         }
       });
       console.log(pageNumber);
       url = config.elgiganten + `/page-${++pageNumber}`;
     }
+    return products;
   };
 
   private _getProductsFromPage = async ($: CheerioAPI): Promise<Product[]> => {
@@ -57,6 +59,5 @@ export class ElgigantenScraperService extends BaseScrapersService {
     return productsWithPrices
       .map((x) => ({ ...new Product(), ...x }))
       .filter((x) => x.name && x.price);
-
   };
 }
