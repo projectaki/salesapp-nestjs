@@ -26,35 +26,27 @@ export class ProductService {
     return this.productRepository.remove(product);
   };
 
-  processProducts = async (products: Product[]) => {
-    const set = new Set();
-    const uniqueProducts = products.filter((x) => {
-      const predicate = !set.has(x.name);
-      set.add(x.name);
-      return predicate;
+  processProduct = async (product: Product) => {
+    const oldProduct = await this.productRepository.findOne({
+      name: product.name,
     });
-    for (const product of uniqueProducts) {
-      const oldProduct = await this.productRepository.findOne({
-        name: product.name,
+    if (!oldProduct) {
+      console.log('insert new prod');
+      await this.productRepository.save({
+        ...product,
+        previous_price: product.price,
       });
-      if (!oldProduct) {
-        await this.productRepository.save({
+    } else {
+      if (product.price !== oldProduct.price) {
+        const updatedProduct = {
+          ...oldProduct,
           ...product,
-          previous_price: product.price,
-        });
-      } else {
-        if (product.price !== oldProduct.price) {
-          const updatedProduct = {
-            ...oldProduct,
-            ...product,
-            previous_price: oldProduct.price,
-          };
-          await this.productRepository.save(updatedProduct);
-          console.log('Price changed', oldProduct, updatedProduct);
-        }
+          previous_price: oldProduct.price,
+        };
+        await this.productRepository.save(updatedProduct);
+        console.log('Price changed', oldProduct, updatedProduct);
       }
     }
-    console.log('All inserted');
   };
 }
 
