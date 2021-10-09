@@ -26,6 +26,7 @@ export class ProductService {
     return this.productRepository.remove(product);
   };
 
+
   processProduct = async (product: Product) => {
     const oldProduct = await this.productRepository.findOne({
       name: product.name,
@@ -45,6 +46,7 @@ export class ProductService {
         };
         await this.productRepository.save(updatedProduct);
         console.log('Price changed', oldProduct, updatedProduct);
+
       }
     }
   };

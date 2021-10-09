@@ -52,9 +52,11 @@ export class ElgigantenScraperService extends BaseScrapersService {
         return model;
       })
       .toArray();
+
     // maybe some sanitization in a callback
     return productsWithPrices
       .map((x) => ({ ...new Product(), ...x }))
       .filter((x) => x.name && x.price);
+
   };
 }

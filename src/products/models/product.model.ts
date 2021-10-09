@@ -15,9 +15,11 @@ export class Product extends BaseModel {
   @Column()
   price: number;
 
+
   @Field((type) => Int)
   @Column({ default: 0 })
   previous_price: number;
+
 
   @Field()
   @Column()
