@@ -21,7 +21,9 @@ export class AppController {
     const products = await this.elgigantenScraper.getAllPRoducts();
     const changedProducts = await this.serv.processProducts(products);
     console.log(changedProducts);
-    this.productQueue.add('product', changedProducts);
+    if (changedProducts.length > 0) {
+      this.productQueue.add('product', changedProducts);
+    }
     return 'Inserted';
   }
 }
