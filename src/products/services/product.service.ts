@@ -26,29 +26,34 @@ export class ProductService {
     return this.productRepository.remove(product);
   };
 
-
-  processProduct = async (product: Product) => {
-    const oldProduct = await this.productRepository.findOne({
-      name: product.name,
-    });
-    if (!oldProduct) {
-      console.log('insert new prod');
-      await this.productRepository.save({
-        ...product,
-        previous_price: product.price,
+  processProducts = async (products: Product[]) => {
+    const changedProducts: Product[] = [];
+    for (const product of products) {
+      const oldProduct = await this.productRepository.findOne({
+        name: product.name,
       });
-    } else {
-      if (product.price !== oldProduct.price) {
-        const updatedProduct = {
-          ...oldProduct,
+      if (!oldProduct) {
+        const newProduct = {
           ...product,
-          previous_price: oldProduct.price,
+          previous_price: product.price,
         };
-        await this.productRepository.save(updatedProduct);
-        console.log('Price changed', oldProduct, updatedProduct);
-
+        await this.productRepository.save(newProduct);
+        console.log('inserted new prod');
+        changedProducts.push(newProduct);
+      } else {
+        if (product.price !== oldProduct.price) {
+          const updatedProduct = {
+            ...oldProduct,
+            ...product,
+            previous_price: oldProduct.price,
+          };
+          await this.productRepository.save(updatedProduct);
+          console.log('updated new prod');
+          changedProducts.push(updatedProduct);
+        }
       }
     }
+    return changedProducts;
   };
 }
 
