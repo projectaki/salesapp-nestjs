@@ -1,13 +1,10 @@
-
 import { Page } from 'puppeteer';
 
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 
 export class BaseScrapersService {
-
   async browserSession<T>(func: (x: Page) => Promise<T>): Promise<T> {
-
     const browser = await puppeteer.use(StealthPlugin()).launch({
       headless: true,
     });
@@ -22,6 +19,5 @@ export class BaseScrapersService {
     console.log('Finish callback func...');
     await browser.close();
     return res;
-
   }
 }

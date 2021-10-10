@@ -13,15 +13,15 @@ import { BullModule } from '@nestjs/bull';
 import { QueueProcessorService } from './queue-processor/queue-processor.service';
 import { join } from 'path';
 import { QueueProcessorModule } from './queue-processor/queue-processor.module';
-
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
     ProductsModule,
     ScrapersModule,
-
+    QueueProcessorModule,
     TaskSchedulerModule,
-
+    MailModule,
     GraphQLModule.forRoot({
       // debug: false,
       // playground: false,
@@ -38,7 +38,6 @@ import { QueueProcessorModule } from './queue-processor/queue-processor.module';
     TypeOrmModule.forRoot(),
     ScheduleModule.forRoot(),
     SharedModule,
-
   ],
   controllers: [AppController],
   providers: [

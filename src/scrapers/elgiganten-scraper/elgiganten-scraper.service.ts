@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { BaseScrapersService } from '../base-scrapers.service';
 import config from '../../config.json';
 import cheerio, { CheerioAPI } from 'cheerio';
@@ -9,40 +9,48 @@ import { Queue } from 'bull';
 
 @Injectable()
 export class ElgigantenScraperService extends BaseScrapersService {
-  constructor(@InjectQueue('product-queue') private productQueue: Queue) {
+  url = config.elgiganten;
+
+  constructor() {
     super();
   }
 
-  processAllProducts = async (): Promise<void> => {
-    super.browserSession(this._traverseAllDiscountProductsFunc);
+  getAllProducts = async (): Promise<Product[]> => {
+    return super.browserSession(this._getUniqueDiscountedProducts);
   };
 
-  private _traverseAllDiscountProductsFunc = async (
+  private _getUniqueDiscountedProducts = async (
     page: Page,
-  ): Promise<void> => {
-    let url = config.elgiganten;
-    let pageNumber = 1;
-    const set = new Set();
-    while (true) {
-      // networkidle property wait until no more network calls are made
-      await page.goto(url, { waitUntil: 'networkidle0' });
-      const html = await page.content(); // serialized HTML of page DOM.
-      const $ = cheerio.load(html);
-      const pageHasProducts = $('.product-tile').length > 0;
-      if (!pageHasProducts) break;
-      const products = await this._getProductsFromPage($);
-      products.forEach((x) => {
-        if (!set.has(x.name)) {
-          this.productQueue.add('product', { ...new Product(), ...x });
-          set.add(x.name);
-        }
-      });
-      console.log(pageNumber);
-      url = config.elgiganten + `/page-${++pageNumber}`;
+  ): Promise<Product[]> => {
+    let products = [];
+    const pageNumber = await this._getDiscountPageNumberOrDefault(page, 100);
+    for (let i = 1; i <= pageNumber; i++) {
+      const $ = await this._pageToCheerio(page, i);
+      products = [...products, ...(await this._getProductsFromCheerio($))];
     }
+    return this._removeProductDuplicatesByName(products);
   };
 
-  private _getProductsFromPage = async ($: CheerioAPI): Promise<Product[]> => {
+  private _removeProductDuplicatesByName = (products: Product[]) => {
+    const productNames = new Set();
+    return products.filter((product) => {
+      return !productNames.has(product.name) && productNames.add(product.name);
+    });
+  };
+
+  private _pageToCheerio = async (page: Page, pageNumber: number) => {
+    console.log(`${this.url}/page-${pageNumber}`);
+    // networkidle property wait until no more network calls are made
+    await page.goto(`${this.url}/page-${pageNumber}`, {
+      waitUntil: 'networkidle0',
+    });
+    const html = await page.content(); // serialized HTML of page DOM.
+    return cheerio.load(html);
+  };
+
+  private _getProductsFromCheerio = async (
+    $: CheerioAPI,
+  ): Promise<Product[]> => {
     const productsWithPrices = $('.product-tile')
       .map((idx, el) => {
         const model = {
@@ -57,6 +65,18 @@ export class ElgigantenScraperService extends BaseScrapersService {
     return productsWithPrices
       .map((x) => ({ ...new Product(), ...x }))
       .filter((x) => x.name && x.price);
+  };
 
+  private _getDiscountPageNumberOrDefault = async (
+    page: Page,
+    maxPages?: number,
+  ): Promise<number> => {
+    await page.goto(this.url, { waitUntil: 'networkidle0' });
+    const html = await page.content(); // serialized HTML of page DOM.
+    const $ = cheerio.load(html);
+    // Todo : if doesnmt exist throw new exception => class name changed exception
+    const lastPageNumberString = $('.pagination__item').last().text() ?? '0';
+    const lastPageNumberNumber = parseInt(lastPageNumberString);
+    return Math.min(maxPages, lastPageNumberNumber);
   };
 }
