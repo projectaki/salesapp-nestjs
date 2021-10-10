@@ -1,10 +1,6 @@
 import { InjectQueue } from '@nestjs/bull';
 import { Controller, Get } from '@nestjs/common';
-
 import { Queue } from 'bull';
-import { MailService } from './mail/mail.service';
-import { Product } from './products/models/product.model';
-
 import { ProductService } from './products/services/product.service';
 import { ElgigantenScraperService } from './scrapers/elgiganten-scraper/elgiganten-scraper.service';
 
@@ -13,7 +9,7 @@ export class AppController {
   constructor(
     private readonly elgigantenScraper: ElgigantenScraperService,
     private serv: ProductService,
-    @InjectQueue('product-queue') private productQueue: Queue,
+    @InjectQueue('mail') private mailQueue: Queue,
   ) {}
 
   @Get('/run')
@@ -22,7 +18,7 @@ export class AppController {
     const changedProducts = await this.serv.processProducts(products);
     console.log(changedProducts);
     if (changedProducts.length > 0) {
-      this.productQueue.add('product', changedProducts);
+      this.mailQueue.add('email', changedProducts);
     }
     return 'Inserted';
   }

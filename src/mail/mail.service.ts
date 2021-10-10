@@ -13,7 +13,7 @@ export class MailService {
       to: 'akos.madarasz@yahoo.com',
       from: 'akiasus@outlook.com',
       subject: 'The following products have price changes',
-      text: 'and easy to do anywhere, even with Node.js',
+      text: 'Price changes',
       html: body,
     };
     Mailer.send(msg)
