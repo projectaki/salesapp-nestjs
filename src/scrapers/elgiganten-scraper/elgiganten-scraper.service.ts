@@ -15,7 +15,7 @@ export class ElgigantenScraperService extends BaseScrapersService {
     super();
   }
 
-  getAllPRoducts = async (): Promise<Product[]> => {
+  getAllProducts = async (): Promise<Product[]> => {
     return super.browserSession(this._getUniqueDiscountedProducts);
   };
 
@@ -23,7 +23,7 @@ export class ElgigantenScraperService extends BaseScrapersService {
     page: Page,
   ): Promise<Product[]> => {
     let products = [];
-    const pageNumber = await this._getDiscountPageNumberOrDefault(page);
+    const pageNumber = await this._getDiscountPageNumberOrDefault(page, 100);
     for (let i = 1; i <= pageNumber; i++) {
       const $ = await this._pageToCheerio(page, i);
       products = [...products, ...(await this._getProductsFromCheerio($))];
@@ -39,6 +39,7 @@ export class ElgigantenScraperService extends BaseScrapersService {
   };
 
   private _pageToCheerio = async (page: Page, pageNumber: number) => {
+    console.log(`${this.url}/page-${pageNumber}`);
     // networkidle property wait until no more network calls are made
     await page.goto(`${this.url}/page-${pageNumber}`, {
       waitUntil: 'networkidle0',
@@ -68,10 +69,14 @@ export class ElgigantenScraperService extends BaseScrapersService {
 
   private _getDiscountPageNumberOrDefault = async (
     page: Page,
+    maxPages?: number,
   ): Promise<number> => {
     await page.goto(this.url, { waitUntil: 'networkidle0' });
     const html = await page.content(); // serialized HTML of page DOM.
     const $ = cheerio.load(html);
-    return parseInt($('.pagination__item').last().text() ?? '0') ?? 0;
+    // Todo : if doesnmt exist throw new exception => class name changed exception
+    const lastPageNumberString = $('.pagination__item').last().text() ?? '0';
+    const lastPageNumberNumber = parseInt(lastPageNumberString);
+    return Math.min(maxPages, lastPageNumberNumber);
   };
 }

@@ -14,7 +14,7 @@ export class AppController {
 
   @Get('/run')
   async fetchProducts(): Promise<string> {
-    const products = await this.elgigantenScraper.getAllPRoducts();
+    const products = await this.elgigantenScraper.getAllProducts();
     const changedProducts = await this.serv.processProducts(products);
     console.log(changedProducts);
     if (changedProducts.length > 0) {
