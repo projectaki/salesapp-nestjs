@@ -21,7 +21,7 @@ import { MailModule } from './mail/mail.module';
     ScrapersModule,
     QueueProcessorModule,
     TaskSchedulerModule,
-
+    MailModule,
     GraphQLModule.forRoot({
       // debug: false,
       // playground: false,
@@ -38,7 +38,6 @@ import { MailModule } from './mail/mail.module';
     TypeOrmModule.forRoot(),
     ScheduleModule.forRoot(),
     SharedModule,
-    MailModule,
   ],
   controllers: [AppController],
   providers: [

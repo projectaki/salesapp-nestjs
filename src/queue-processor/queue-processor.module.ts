@@ -16,10 +16,9 @@ import { MailQueueProcessorService } from './mail-queue-processor.service';
         name: 'mail',
       },
     ),
-    ProductsModule,
     MailModule,
   ],
   providers: [QueueProcessorService, MailQueueProcessorService],
-  exports: [QueueProcessorService, BullModule],
+  exports: [QueueProcessorService, BullModule, MailQueueProcessorService],
 })
 export class QueueProcessorModule {}

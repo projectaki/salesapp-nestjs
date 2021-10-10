@@ -8,7 +8,6 @@ export class BaseModel {
   id: string;
 
   @Field()
-
   @Column({ length: 500 })
   name: string;
 }

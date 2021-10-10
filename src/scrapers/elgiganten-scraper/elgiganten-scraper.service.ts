@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { BaseScrapersService } from '../base-scrapers.service';
 import config from '../../config.json';
 import cheerio, { CheerioAPI } from 'cheerio';
