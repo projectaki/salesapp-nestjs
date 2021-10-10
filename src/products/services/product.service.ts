@@ -33,11 +33,13 @@ export class ProductService {
         name: product.name,
       });
       if (!oldProduct) {
-        console.log('insert new prod');
-        await this.productRepository.save({
+        const newProduct = {
           ...product,
           previous_price: product.price,
-        });
+        };
+        await this.productRepository.save(newProduct);
+        console.log('inserted new prod');
+        changedProducts.push(newProduct);
       } else {
         if (product.price !== oldProduct.price) {
           const updatedProduct = {
@@ -46,6 +48,7 @@ export class ProductService {
             previous_price: oldProduct.price,
           };
           await this.productRepository.save(updatedProduct);
+          console.log('updated new prod');
           changedProducts.push(updatedProduct);
         }
       }
