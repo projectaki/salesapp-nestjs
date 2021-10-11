@@ -3,17 +3,14 @@ import { AppController } from './app.controller';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ProductsModule } from './products/products.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { BaseScrapersService } from './scrapers/base-scrapers.service';
 import { ScrapersModule } from './scrapers/scrapers.module';
 import { SharedModule } from './shared/shared.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TaskSchedulerModule } from './task-scheduler/task-scheduler.module';
-
 import { BullModule } from '@nestjs/bull';
-import { QueueProcessorService } from './queue-processor/queue-processor.service';
-import { join } from 'path';
 import { QueueProcessorModule } from './queue-processor/queue-processor.module';
 import { MailModule } from './mail/mail.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -37,6 +34,7 @@ import { MailModule } from './mail/mail.module';
     }),
     TypeOrmModule.forRoot(),
     ScheduleModule.forRoot(),
+    ConfigModule.forRoot({ isGlobal: true }),
     SharedModule,
   ],
   controllers: [AppController],
