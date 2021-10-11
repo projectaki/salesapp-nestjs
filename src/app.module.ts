@@ -10,7 +10,9 @@ import { TaskSchedulerModule } from './task-scheduler/task-scheduler.module';
 import { BullModule } from '@nestjs/bull';
 import { QueueProcessorModule } from './queue-processor/queue-processor.module';
 import { MailModule } from './mail/mail.module';
+
 import { ConfigModule } from '@nestjs/config';
+
 
 @Module({
   imports: [

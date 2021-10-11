@@ -1,15 +1,19 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { Global, Injectable } from '@nestjs/common';
+
 import { ConfigService } from '@nestjs/config';
+
 import Mailer from '@sendgrid/mail';
 
 @Global()
 @Injectable()
 export class MailService {
+
   constructor(private configService: ConfigService) {}
 
   async sendEmail(body: string) {
     Mailer.setApiKey(this.configService.get<string>('SENDGRID_API_KEY'));
+
     const msg = {
       to: 'akos.madarasz@yahoo.com',
       from: 'akiasus@outlook.com',
