@@ -8,7 +8,6 @@ import Mailer from '@sendgrid/mail';
 @Global()
 @Injectable()
 export class MailService {
-
   constructor(private configService: ConfigService) {}
 
   async sendEmail(body: string) {

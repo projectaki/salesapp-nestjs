@@ -1,5 +1,5 @@
 import { InjectQueue } from '@nestjs/bull';
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, InternalServerErrorException } from '@nestjs/common';
 
 import { ConfigService } from '@nestjs/config';
 
@@ -17,14 +17,13 @@ export class AppController {
 
     private logger: LoggingService,
     private configService: ConfigService,
-
   ) {}
 
   @Get('/run')
   async fetchProducts(): Promise<string> {
-
-    this.logger.log(this.configService.get<string>('SENDGRID_API_KEY'));
-
+    const a: { name: string } = null;
+    const b = a.name;
+    console.log('got here');
     // const products = await this.elgigantenScraper.getAllProducts();
     // const changedProducts = await this.serv.processProducts(products);
     // console.log(changedProducts);

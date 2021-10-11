@@ -11,10 +11,8 @@ import { BullModule } from '@nestjs/bull';
 import { QueueProcessorModule } from './queue-processor/queue-processor.module';
 import { MailModule } from './mail/mail.module';
 import { ConfigModule } from '@nestjs/config';
+import { ExceptionsModule } from './exceptions/exceptions.module';
 import { LoggerModule } from './logger/logger.module';
-
-import { ConfigModule } from '@nestjs/config';
-
 
 @Module({
   imports: [
@@ -42,6 +40,7 @@ import { ConfigModule } from '@nestjs/config';
     ConfigModule.forRoot({ isGlobal: true }),
     SharedModule,
     LoggerModule,
+    ExceptionsModule,
   ],
   controllers: [AppController],
   providers: [
