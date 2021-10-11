@@ -1,10 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { LoggingService } from './logger/logger.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    logger: ['error', 'warn'],
+    bufferLogs: true,
   });
+  app.useLogger(app.get(LoggingService));
   await app.listen(3000);
 }
 bootstrap();
