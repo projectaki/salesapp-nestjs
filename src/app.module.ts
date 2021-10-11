@@ -10,6 +10,8 @@ import { TaskSchedulerModule } from './task-scheduler/task-scheduler.module';
 import { BullModule } from '@nestjs/bull';
 import { QueueProcessorModule } from './queue-processor/queue-processor.module';
 import { MailModule } from './mail/mail.module';
+import { ConfigModule } from '@nestjs/config';
+import { LoggerModule } from './logger/logger.module';
 
 import { ConfigModule } from '@nestjs/config';
 
@@ -21,6 +23,7 @@ import { ConfigModule } from '@nestjs/config';
     QueueProcessorModule,
     TaskSchedulerModule,
     MailModule,
+    LoggerModule,
     GraphQLModule.forRoot({
       // debug: false,
       // playground: false,
@@ -38,6 +41,7 @@ import { ConfigModule } from '@nestjs/config';
     ScheduleModule.forRoot(),
     ConfigModule.forRoot({ isGlobal: true }),
     SharedModule,
+    LoggerModule,
   ],
   controllers: [AppController],
   providers: [
