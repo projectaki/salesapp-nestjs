@@ -14,13 +14,17 @@ export class AppController {
     private readonly elgigantenScraper: ElgigantenScraperService,
     private serv: ProductService,
     @InjectQueue('mail') private mailQueue: Queue,
+
     private logger: LoggingService,
     private configService: ConfigService,
+
   ) {}
 
   @Get('/run')
   async fetchProducts(): Promise<string> {
+
     this.logger.log(this.configService.get<string>('SENDGRID_API_KEY'));
+
     // const products = await this.elgigantenScraper.getAllProducts();
     // const changedProducts = await this.serv.processProducts(products);
     // console.log(changedProducts);

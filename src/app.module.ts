@@ -13,6 +13,9 @@ import { MailModule } from './mail/mail.module';
 import { ConfigModule } from '@nestjs/config';
 import { LoggerModule } from './logger/logger.module';
 
+import { ConfigModule } from '@nestjs/config';
+
+
 @Module({
   imports: [
     ProductsModule,
