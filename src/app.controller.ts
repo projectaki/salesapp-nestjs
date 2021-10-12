@@ -21,19 +21,12 @@ export class AppController {
 
   @Get('/run')
   async fetchProducts(): Promise<string> {
-
-    this.logger.setContext(AppController.name);
-    this.logger.Log('TESTING');
-
-    const a: { name: string } = null;
-    const b = a.name;
-    console.log('got here');
-    // const products = await this.elgigantenScraper.getAllProducts();
-    // const changedProducts = await this.serv.processProducts(products);
-    // console.log(changedProducts);
-    // if (changedProducts.length > 0) {
-    //   this.mailQueue.add('email', changedProducts);
-    // }
+    const products = await this.elgigantenScraper.getAllProducts();
+    const changedProducts = await this.serv.processProducts(products);
+    console.log(changedProducts);
+    if (changedProducts.length > 0) {
+      this.mailQueue.add('email', changedProducts);
+    }
 
     return 'Inserted';
   }

@@ -9,7 +9,7 @@ export class MailQueueProcessorService {
   @Process('email')
   async processProduct(job: Job<Product[]>) {
     console.log('Processing mail');
-    this.mail.sendEmail(JSON.stringify(job.data));
+    this.mail.sendEmailWithTemplate(job.data);
     return {};
   }
 }
