@@ -27,7 +27,6 @@ export class AppController {
     if (changedProducts.length > 0) {
       this.mailQueue.add('email', changedProducts);
     }
-
     return 'Inserted';
   }
 }
