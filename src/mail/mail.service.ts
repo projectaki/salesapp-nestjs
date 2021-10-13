@@ -34,7 +34,7 @@ export class MailService {
     const msg = {
       to: 'akos.madarasz@yahoo.com',
       from: 'akiasus@outlook.com',
-      templateId: 'd-604aac3c9b7d41e5af6aa1abfe66e04f',
+      templateId: 'd-295b6355f4274c738e73eeb63e89fc0f',
       dynamic_template_data: {
         date: new Date().toString(),
         products,

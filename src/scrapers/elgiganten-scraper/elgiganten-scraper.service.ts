@@ -4,8 +4,6 @@ import config from '../../config.json';
 import cheerio, { CheerioAPI } from 'cheerio';
 import { Product } from 'src/products/models/product.model';
 import { Page } from 'puppeteer';
-import { InjectQueue } from '@nestjs/bull';
-import { Queue } from 'bull';
 
 @Injectable()
 export class ElgigantenScraperService extends BaseScrapersService {
@@ -56,6 +54,7 @@ export class ElgigantenScraperService extends BaseScrapersService {
         const model = {
           name: $(el).attr('title'),
           price: parseInt($(el).find('.price').text()),
+          img_url: $(el).find('.product-tile__image').attr('src'),
         };
         return model;
       })

@@ -22,10 +22,13 @@ export class AppController {
   @Get('/run')
   async fetchProducts(): Promise<string> {
     const products = await this.elgigantenScraper.getAllProducts();
-    const changedProducts = await this.serv.processProducts(products);
-    console.log(changedProducts);
-    if (changedProducts.length > 0) {
-      this.mailQueue.add('email', changedProducts);
+    // const changedProducts = await this.serv.processProducts(products);
+    // console.log(changedProducts);
+    // if (changedProducts.length > 0) {
+    //   this.mailQueue.add('email', changedProducts);
+    // }
+    for (let i = 0; i < 49; i++) {
+      console.log(products[i]);
     }
     return 'Inserted';
   }
