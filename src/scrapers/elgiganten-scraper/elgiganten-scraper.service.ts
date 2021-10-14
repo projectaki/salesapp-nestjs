@@ -24,16 +24,26 @@ export class ElgigantenScraperService extends BaseScrapersService {
     const pageNumber = await this._getDiscountPageNumberOrDefault(page, 100);
     for (let i = 1; i <= pageNumber; i++) {
       const $ = await this._pageToCheerio(page, i);
-      products = [...products, ...(await this._getProductsFromCheerio($))];
+      products = [...products, ...this._getProductsFromCheerio($)];
     }
-    return this._removeProductDuplicatesByName(products);
+    return this._sanitize(products);
   };
 
-  private _removeProductDuplicatesByName = (products: Product[]) => {
+  private _sanitize = (products: Product[]) => {
     const productNames = new Set();
-    return products.filter((product) => {
+    const uniqueProducts = products.filter((product) => {
       return !productNames.has(product.name) && productNames.add(product.name);
     });
+
+    const sanitizedProducts = uniqueProducts.filter((x) => {
+      return x.name && x.price;
+    });
+
+    const trimmedProducts = sanitizedProducts.map((x) => ({
+      ...x,
+      name: x.name.trim(),
+    }));
+    return trimmedProducts;
   };
 
   private _pageToCheerio = async (page: Page, pageNumber: number) => {
@@ -46,9 +56,7 @@ export class ElgigantenScraperService extends BaseScrapersService {
     return cheerio.load(html);
   };
 
-  private _getProductsFromCheerio = async (
-    $: CheerioAPI,
-  ): Promise<Product[]> => {
+  private _getProductsFromCheerio($: CheerioAPI): Product[] {
     const productsWithPrices = $('.product-tile')
       .map((idx, el) => {
         const model = {
@@ -59,12 +67,9 @@ export class ElgigantenScraperService extends BaseScrapersService {
         return model;
       })
       .toArray();
-
     // maybe some sanitization in a callback
-    return productsWithPrices
-      .map((x) => ({ ...new Product(), ...x }))
-      .filter((x) => x.name && x.price);
-  };
+    return productsWithPrices.map((x) => ({ ...new Product(), ...x }));
+  }
 
   private _getDiscountPageNumberOrDefault = async (
     page: Page,

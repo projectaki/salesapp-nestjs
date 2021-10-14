@@ -32,7 +32,7 @@ export class MailService {
 
   async sendEmailWithTemplate(products: Product[]) {
     const msg = {
-      to: 'akos.madarasz@yahoo.com',
+      to: 'akosegypro@gmail.com',
       from: 'akiasus@outlook.com',
       templateId: 'd-295b6355f4274c738e73eeb63e89fc0f',
       dynamic_template_data: {
