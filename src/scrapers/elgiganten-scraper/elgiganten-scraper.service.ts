@@ -4,6 +4,7 @@ import config from '../../config.json';
 import cheerio, { CheerioAPI } from 'cheerio';
 import { Product } from 'src/products/models/product.model';
 import { Page } from 'puppeteer';
+import { NoCssFoundException } from 'src/exceptions/errors/no-css-found.error';
 
 @Injectable()
 export class ElgigantenScraperService extends BaseScrapersService {
@@ -57,7 +58,14 @@ export class ElgigantenScraperService extends BaseScrapersService {
   };
 
   private _getProductsFromCheerio($: CheerioAPI): Product[] {
-    const productsWithPrices = $('.product-tile')
+    const productTiles = $('.product-tile');
+    if (!productTiles.text()) {
+      throw new NoCssFoundException(
+        'Product tiles css returned empty! Css may have changed!',
+      );
+    }
+
+    const productsWithPrices = productTiles
       .map((idx, el) => {
         const model = {
           name: $(el).attr('title'),
@@ -79,7 +87,11 @@ export class ElgigantenScraperService extends BaseScrapersService {
     const html = await page.content(); // serialized HTML of page DOM.
     const $ = cheerio.load(html);
     // Todo : if doesnmt exist throw new exception => class name changed exception
-    const lastPageNumberString = $('.pagination__item').last().text() ?? '0';
+    const lastPageNumberString = $('.pagination__item').last().text();
+    if (!lastPageNumberString)
+      throw new NoCssFoundException(
+        'Cant find page count! Css may have changed!',
+      );
     const lastPageNumberNumber = parseInt(lastPageNumberString);
     return Math.min(maxPages, lastPageNumberNumber);
   };
