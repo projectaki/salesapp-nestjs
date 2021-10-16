@@ -26,8 +26,8 @@ export class ProductService {
     return this.productRepository.remove(product);
   };
 
-  processProducts = async (products: Product[]) => {
-    const changedProducts: Product[] = [];
+  processProducts = async (products: Product[], companyId?: string) => {
+    const productsWithLowerPrices: Product[] = [];
     for (const product of products) {
       const oldProduct = await this.productRepository.findOne({
         name: product.name,
@@ -38,8 +38,7 @@ export class ProductService {
           previous_price: product.price,
         };
         await this.productRepository.save(newProduct);
-        console.log('inserted new prod');
-        changedProducts.push(newProduct);
+        productsWithLowerPrices.push(newProduct);
       } else {
         if (product.price !== oldProduct.price) {
           const updatedProduct = {
@@ -48,32 +47,11 @@ export class ProductService {
             previous_price: oldProduct.price,
           };
           await this.productRepository.save(updatedProduct);
-          console.log('updated new prod');
-          changedProducts.push(updatedProduct);
+          if (product.price < product.previous_price)
+            productsWithLowerPrices.push(updatedProduct);
         }
       }
     }
-    return changedProducts;
+    return productsWithLowerPrices;
   };
 }
-
-// Below is how to make a transaction
-// constructor(private connection: Connection) {}
-// async createMany(users: User[]) {
-//   const queryRunner = this.connection.createQueryRunner();
-
-//   await queryRunner.connect();
-//   await queryRunner.startTransaction();
-//   try {
-//     await queryRunner.manager.save(users[0]);
-//     await queryRunner.manager.save(users[1]);
-
-//     await queryRunner.commitTransaction();
-//   } catch (err) {
-//     // since we have errors lets rollback the changes we made
-//     await queryRunner.rollbackTransaction();
-//   } finally {
-//     // you need to release a queryRunner which was manually instantiated
-//     await queryRunner.release();
-//   }
-// }

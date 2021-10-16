@@ -8,13 +8,14 @@ import { SharedModule } from './shared/shared.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TaskSchedulerModule } from './task-scheduler/task-scheduler.module';
 import { BullModule } from '@nestjs/bull';
-import { QueueProcessorModule } from './queue-processor/queue-processor.module';
+import { QueueProcessorModule } from './redis-queue-processor/queue-processor.module';
 import { MailModule } from './mail/mail.module';
 import { ConfigModule } from '@nestjs/config';
 import { ExceptionsModule } from './exceptions/exceptions.module';
 import { LoggerModule } from './logger/logger.module';
 
 @Module({
+  // Remove the ones that no longer needed after controller refactored
   imports: [
     ProductsModule,
     ScrapersModule,
@@ -22,6 +23,7 @@ import { LoggerModule } from './logger/logger.module';
     TaskSchedulerModule,
     MailModule,
     LoggerModule,
+    ExceptionsModule,
     GraphQLModule.forRoot({
       // debug: false,
       // playground: false,
@@ -38,9 +40,6 @@ import { LoggerModule } from './logger/logger.module';
     TypeOrmModule.forRoot(),
     ScheduleModule.forRoot(),
     ConfigModule.forRoot({ isGlobal: true }),
-    SharedModule,
-    LoggerModule,
-    ExceptionsModule,
   ],
   controllers: [AppController],
   providers: [

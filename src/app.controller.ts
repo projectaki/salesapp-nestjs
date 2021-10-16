@@ -27,7 +27,7 @@ export class AppController {
     const changedProducts = await this.serv.processProducts(products);
     console.log(changedProducts);
     if (changedProducts.length > 0) {
-      this.mailQueue.add('email', changedProducts);
+      this.mailQueue.add('products', changedProducts);
     }
     return 'Inserted';
   }
