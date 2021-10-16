@@ -6,10 +6,11 @@ import { Product } from 'src/products/models/product.model';
 @Processor('mail')
 export class MailQueueProcessorService {
   constructor(private readonly mail: MailService) {}
-  @Process('email')
+
+  // When a message is sent with products tag to mail queue, do the following.
+  @Process('products')
   async processProduct(job: Job<Product[]>) {
-    console.log('Processing mail');
-    this.mail.sendEmailWithTemplate(job.data);
+    this.mail.sendEmail(job.data, 'akosegypro@gmail.com');
     return {};
   }
 }

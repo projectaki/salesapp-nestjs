@@ -1,10 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
+//import { runIfIdle } from './tasks/task';
 
 @Injectable()
 export class TaskSchedulerService {
-  // @Cron(CronExpression.EVERY_10_SECONDS)
-  // cronTest() {
-  //   console.log('Testing cron jobs');
-  // }
+  // cronTest = runIfIdle(
+  //   () =>
+  //     new Promise((resolve, error) => {
+  //       setTimeout(() => {
+  //         resolve();
+  //       }, 5000);
+  //     }),
+  // );
+  // @Cron(CronExpression.EVERY_5_SECONDS)
+  // cronTest();
 }

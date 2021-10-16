@@ -5,6 +5,8 @@ import { ConfigService } from '@nestjs/config';
 
 import { Queue } from 'bull';
 import { LoggingService } from './logger/logger.service';
+import { MailService } from './mail/mail.service';
+import { Product } from './products/models/product.model';
 import { ProductService } from './products/services/product.service';
 import { ElgigantenScraperService } from './scrapers/elgiganten-scraper/elgiganten-scraper.service';
 
@@ -14,7 +16,7 @@ export class AppController {
     private readonly elgigantenScraper: ElgigantenScraperService,
     private serv: ProductService,
     @InjectQueue('mail') private mailQueue: Queue,
-
+    private sender: MailService,
     private logger: LoggingService,
     private configService: ConfigService,
   ) {}
@@ -25,7 +27,7 @@ export class AppController {
     const changedProducts = await this.serv.processProducts(products);
     console.log(changedProducts);
     if (changedProducts.length > 0) {
-      this.mailQueue.add('email', changedProducts);
+      this.mailQueue.add('products', changedProducts);
     }
     return 'Inserted';
   }

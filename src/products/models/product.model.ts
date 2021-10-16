@@ -15,11 +15,9 @@ export class Product extends BaseModel {
   @Column()
   price: number;
 
-
   @Field((type) => Int)
   @Column({ default: 0 })
   previous_price: number;
-
 
   @Field()
   @Column()
@@ -30,6 +28,8 @@ export class Product extends BaseModel {
   @Column()
   @UpdateDateColumn()
   updated_at: Date;
+
+  img_url: string;
 }
 
 // @Field(type => [InvoiceModel], { nullable: true })
