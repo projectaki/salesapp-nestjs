@@ -8,12 +8,13 @@ import {
 import { ConfigService } from '@nestjs/config';
 
 import { Queue } from 'bull';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { Public } from './auth/public-route-decorator';
 import { LoggingService } from './logger/logger.service';
 import { MailService } from './mail/mail.service';
 import { Product } from './products/models/product.model';
 import { ProductService } from './products/services/product.service';
 import { ElgigantenScraperService } from './scrapers/elgiganten-scraper/elgiganten-scraper.service';
-import { AuthGuard } from '@nestjs/passport';
 
 @Controller()
 export class AppController {
@@ -26,7 +27,7 @@ export class AppController {
     private configService: ConfigService,
   ) {}
 
-  @UseGuards(AuthGuard('jwt'))
+  //@Public()
   @Get('/run')
   async fetchProducts(): Promise<string> {
     const products = await this.elgigantenScraper.getAllProducts();
