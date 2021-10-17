@@ -1,6 +1,10 @@
 import { InjectQueue } from '@nestjs/bull';
-import { Controller, Get, InternalServerErrorException } from '@nestjs/common';
-
+import {
+  Controller,
+  Get,
+  InternalServerErrorException,
+  UseGuards,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 import { Queue } from 'bull';
@@ -9,6 +13,7 @@ import { MailService } from './mail/mail.service';
 import { Product } from './products/models/product.model';
 import { ProductService } from './products/services/product.service';
 import { ElgigantenScraperService } from './scrapers/elgiganten-scraper/elgiganten-scraper.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller()
 export class AppController {
@@ -21,6 +26,7 @@ export class AppController {
     private configService: ConfigService,
   ) {}
 
+  @UseGuards(AuthGuard('jwt'))
   @Get('/run')
   async fetchProducts(): Promise<string> {
     const products = await this.elgigantenScraper.getAllProducts();
