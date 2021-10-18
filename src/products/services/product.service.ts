@@ -47,7 +47,7 @@ export class ProductService {
             previous_price: oldProduct.price,
           };
           await this.productRepository.save(updatedProduct);
-          if (product.price < product.previous_price)
+          if (product.price < oldProduct.price)
             productsWithLowerPrices.push(updatedProduct);
         }
       }
