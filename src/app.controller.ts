@@ -38,4 +38,10 @@ export class AppController {
     }
     return 'Inserted';
   }
+
+  @Get('/test')
+  async test(): Promise<string> {
+    console.log('Entered controller');
+    return 'Response';
+  }
 }
