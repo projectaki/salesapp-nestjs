@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 
 @ObjectType()
-@Entity()
+@Entity({ name: 'products' })
 export class Product extends BaseModel {
   @Field((type) => Int)
   @Column()
