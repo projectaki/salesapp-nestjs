@@ -3,6 +3,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { PassportModule } from '@nestjs/passport';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { JwtStrategy } from './jwt.strategy';
+import { Auth0ManagementApiService } from './auth0-management-api/auth0-management-api.service';
 
 @Module({
   imports: [PassportModule.register({ defaultStrategy: 'jwt' })],
@@ -13,7 +14,8 @@ import { JwtStrategy } from './jwt.strategy';
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
     },
+    Auth0ManagementApiService,
   ],
-  exports: [PassportModule],
+  exports: [PassportModule, Auth0ManagementApiService],
 })
 export class AuthModule {}

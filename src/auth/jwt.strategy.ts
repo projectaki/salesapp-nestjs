@@ -26,8 +26,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   // Callback with claims
   validate(payload: unknown): unknown {
-    console.log('user info', payload, JSON.stringify(payload));
-    // If we are coming from Angular app, save/update user in users table
     return payload;
   }
 }
