@@ -36,6 +36,7 @@
     "@nestjs/typeorm": "^8.0.2",
     "@sendgrid/mail": "^7.4.7",
     "apollo-server-express": "^3.3.0",
+    "axios": "^0.23.0",
     "bull": "^3.29.2",
     "cheerio": "^1.0.0-rc.10",
     "graphql": "^15.6.0",
@@ -49,6 +50,7 @@
     "puppeteer-extra": "^3.2.3",
     "puppeteer-extra-plugin-stealth": "^2.8.1",
     "reflect-metadata": "^0.1.13",
+    "request": "^2.88.2",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
     "typeorm": "^0.2.38"
