@@ -7,6 +7,7 @@ async function bootstrap() {
     bufferLogs: true,
   });
   app.useLogger(app.get(LoggingService));
+  app.enableCors();
   await app.listen(3000);
 }
 bootstrap();
