@@ -11,6 +11,7 @@ import { Queue } from 'bull';
 import { ManagementApiService } from './auth/auth0-management-api/management-api.service';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { Public } from './auth/public-route-decorator';
+import { User } from './auth/user-decorator';
 import { LoggingService } from './logger/logger.service';
 import { MailService } from './mail/mail.service';
 import { Product } from './products/models/product.model';
@@ -23,7 +24,6 @@ export class AppController {
     private readonly elgigantenScraper: ElgigantenScraperService,
     private serv: ProductService,
     @InjectQueue('mail') private mailQueue: Queue,
-    private sender: MailService,
     private logger: LoggingService,
     private configService: ConfigService,
     private userManager: ManagementApiService,
@@ -41,10 +41,13 @@ export class AppController {
     return 'Inserted';
   }
 
-  @Public()
+  //@Public()
   @Get('/test')
-  async test(): Promise<string> {
-    this.userManager.GetUsers();
+  async test(@User() user): Promise<string> {
+    this.userManager
+      .updatePreferences(user['sub'], { theme: 'black' })
+      .then((x) => console.log('updated', x));
+    //console.log('user:', user['https://wezl.io/email']);
     return 'Response';
   }
 }
