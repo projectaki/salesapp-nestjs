@@ -8,7 +8,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 
 import { Queue } from 'bull';
-import { Auth0ManagementApiService } from './auth/auth0-management-api/auth0-management-api.service';
+import { ManagementApiService } from './auth/auth0-management-api/management-api.service';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { Public } from './auth/public-route-decorator';
 import { LoggingService } from './logger/logger.service';
@@ -26,7 +26,7 @@ export class AppController {
     private sender: MailService,
     private logger: LoggingService,
     private configService: ConfigService,
-    private userManager: Auth0ManagementApiService,
+    private userManager: ManagementApiService,
   ) {}
 
   //@Public()
@@ -44,6 +44,7 @@ export class AppController {
   @Public()
   @Get('/test')
   async test(): Promise<string> {
+    this.userManager.GetUsers();
     return 'Response';
   }
 }

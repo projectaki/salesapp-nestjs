@@ -24,7 +24,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  // Callback with claims
   validate(payload: unknown): unknown {
     return payload;
   }
