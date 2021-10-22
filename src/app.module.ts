@@ -13,6 +13,8 @@ import { MailModule } from './mail/mail.module';
 import { ConfigModule } from '@nestjs/config';
 import { ExceptionsModule } from './exceptions/exceptions.module';
 import { LoggerModule } from './logger/logger.module';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   // Remove the ones that no longer needed after controller refactored
@@ -40,6 +42,8 @@ import { LoggerModule } from './logger/logger.module';
     TypeOrmModule.forRoot(),
     ScheduleModule.forRoot(),
     ConfigModule.forRoot({ isGlobal: true }),
+    AuthModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [

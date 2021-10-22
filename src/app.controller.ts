@@ -1,9 +1,17 @@
 import { InjectQueue } from '@nestjs/bull';
-import { Controller, Get, InternalServerErrorException } from '@nestjs/common';
-
+import {
+  Controller,
+  Get,
+  InternalServerErrorException,
+  UseGuards,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 import { Queue } from 'bull';
+import { ManagementApiService } from './auth/auth0-management-api/management-api.service';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { Public } from './auth/public-route-decorator';
+import { User } from './auth/user-decorator';
 import { LoggingService } from './logger/logger.service';
 import { MailService } from './mail/mail.service';
 import { Product } from './products/models/product.model';
@@ -16,11 +24,12 @@ export class AppController {
     private readonly elgigantenScraper: ElgigantenScraperService,
     private serv: ProductService,
     @InjectQueue('mail') private mailQueue: Queue,
-    private sender: MailService,
     private logger: LoggingService,
     private configService: ConfigService,
+    private userManager: ManagementApiService,
   ) {}
 
+  //@Public()
   @Get('/run')
   async fetchProducts(): Promise<string> {
     const products = await this.elgigantenScraper.getAllProducts();
@@ -30,5 +39,15 @@ export class AppController {
       this.mailQueue.add('products', changedProducts);
     }
     return 'Inserted';
+  }
+
+  //@Public()
+  @Get('/test')
+  async test(@User() user): Promise<string> {
+    this.userManager
+      .updatePreferences(user['sub'], { theme: 'black' })
+      .then((x) => console.log('updated', x));
+    //console.log('user:', user['https://wezl.io/email']);
+    return 'Response';
   }
 }

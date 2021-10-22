@@ -25,8 +25,8 @@ export class ElgigantenScraperService
     let products = [];
     const pageNumber = await this._getPageNumberOrDefault(page, this.url, 100);
     for (let i = 1; i <= pageNumber; i++) {
-      console.log(`${this.url}/page-${pageNumber}`);
-      const url = `${this.url}/page-${pageNumber}`;
+      console.log(`${this.url}/page-${i}`);
+      const url = `${this.url}/page-${i}`;
       const html = await this._loadHtmlFromUrl(page, url);
       products = [...products, ...this._getProductsFromHtml(html)];
     }
