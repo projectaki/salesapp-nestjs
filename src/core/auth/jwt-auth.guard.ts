@@ -11,15 +11,14 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   }
 
   canActivate(context: ExecutionContext) {
-    const graphQLCtx = GqlExecutionContext.create(context);
     // If route is public return true
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
-      graphQLCtx.getHandler(),
-      graphQLCtx.getClass(),
+      context.getHandler(),
+      context.getClass(),
     ]);
     if (isPublic) {
       return true;
     }
-    return super.canActivate(graphQLCtx);
+    return super.canActivate(context);
   }
 }

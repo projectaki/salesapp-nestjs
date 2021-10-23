@@ -7,6 +7,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LoggerModule } from './core/logger/logger.module';
 import { UserModule } from './modules/users/user.module';
 import { ProductsModule } from './modules/products/products.module';
+import { AuthModule } from './core/auth/auth.module';
 
 @Module({
   // Remove the ones that no longer needed after controller refactored
@@ -33,6 +34,7 @@ import { ProductsModule } from './modules/products/products.module';
     LoggerModule,
     UserModule,
     ProductsModule,
+    AuthModule,
   ],
   providers: [
     // Below is IOC container in NestJS
