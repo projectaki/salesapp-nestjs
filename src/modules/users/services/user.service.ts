@@ -25,4 +25,8 @@ export class UserService {
   remove = (user: User): Promise<User> => {
     return this.userRepository.remove(user);
   };
+
+  findByParams(params: any) {
+    return this.userRepository.findOne(params);
+  }
 }

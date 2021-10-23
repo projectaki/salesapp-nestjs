@@ -1,4 +1,8 @@
+import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { JwtAuthGuard } from 'src/core/auth/jwt-auth.guard';
+import { UserCreateInput } from '../models/input-types/user-create-input';
+import { UserUpdateInput } from '../models/input-types/user-update-input';
 import { User } from '../models/user.model';
 import { UserService } from '../services/user.service';
 
@@ -11,21 +15,19 @@ export class UserResolver {
     return this.userService.find(id);
   }
 
-  //   @Mutation((returns) => User)
-  //   async createProduct(
-  //     @Args('input') input: ,
-  //   ): Promise<User> {
-  //     const prod = new Product();
-  //     return await this.userService.create({ ...prod, ...input });
-  //   }
+  @Mutation(() => User)
+  async createUser(@Args('input') input: UserCreateInput): Promise<User> {
+    const user = new User();
+    return await this.userService.create({ ...user, ...input });
+  }
 
-  //   @Mutation((returns) => User)
-  //   async updateProduct(
-  //     @Args('input') input: ,
-  //   ): Promise<User> {
-  //     const prod = new Product();
-  //     return await this.userService.update({ ...prod, ...input });
-  //   }
+  @Mutation(() => User)
+  async updateUser(@Args('input') input: UserUpdateInput): Promise<User> {
+    const existingUser = await this.userService.findByParams({
+      authId: input.authId,
+    });
+    return await this.userService.update({ ...existingUser, ...input });
+  }
 
   // @ResolveField()
   // async posts(@Parent() author: Author) {

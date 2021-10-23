@@ -4,6 +4,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ScheduleModule } from '@nestjs/schedule';
 import { BullModule } from '@nestjs/bull';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { LoggerModule } from './core/logger/logger.module';
+import { UserModule } from './modules/users/user.module';
+import { ProductsModule } from './modules/products/products.module';
 
 @Module({
   // Remove the ones that no longer needed after controller refactored
@@ -27,6 +30,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     TypeOrmModule.forRoot(),
     ScheduleModule.forRoot(),
     ConfigModule.forRoot({ isGlobal: true }),
+    LoggerModule,
+    UserModule,
+    ProductsModule,
   ],
   providers: [
     // Below is IOC container in NestJS

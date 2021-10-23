@@ -1,7 +1,7 @@
 import { Global, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Mailer from '@sendgrid/mail';
-import { Product } from 'src/products/models/product.model';
+import { Product } from '../../modules/products/models/product.model';
 import { LoggingService } from '../logger/logger.service';
 
 @Injectable()

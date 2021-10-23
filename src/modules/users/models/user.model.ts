@@ -6,6 +6,10 @@ import { BaseModel } from '../../../core/models/base-model';
 @Entity({ name: 'users' })
 export class User extends BaseModel {
   @Field()
+  @Column({ length: 100 })
+  authId: string;
+
+  @Field()
   @Column({ length: 500 })
   email: string;
 
