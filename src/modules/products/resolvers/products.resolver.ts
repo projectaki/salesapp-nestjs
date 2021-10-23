@@ -13,7 +13,7 @@ import { Product } from '../models/product.model';
 import { ProductService } from '../services/product.service';
 
 // In the code first method, a resolver class both defines resolver functions and generates the Query type.
-@Resolver((of) => Product)
+@Resolver(() => Product)
 export class ProductsResolver {
   constructor(private productService: ProductService) {}
 
