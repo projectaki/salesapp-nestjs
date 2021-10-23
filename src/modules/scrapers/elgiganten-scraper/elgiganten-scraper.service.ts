@@ -1,10 +1,10 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { BaseScrapersService } from '../base-scrapers.service';
-import cheerio, { CheerioAPI } from 'cheerio';
-import { Product } from 'src/products/models/product.model';
+import cheerio from 'cheerio';
 import { Page } from 'puppeteer';
-import { NoCssFoundException } from 'src/exceptions/errors/no-css-found.error';
 import { IScraper } from '../interfaces/scraper.interface';
+import { NoCssFoundException } from 'src/core/exceptions/errors/no-css-found.error';
+import { Product } from '../../products/models/product.model';
 
 @Injectable()
 export class ElgigantenScraperService

@@ -1,8 +1,8 @@
 import { Global, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Mailer from '@sendgrid/mail';
-import { LoggingService } from 'src/logger/logger.service';
 import { Product } from 'src/products/models/product.model';
+import { LoggingService } from '../logger/logger.service';
 
 @Injectable()
 export class MailService {
@@ -25,24 +25,24 @@ export class MailService {
     };
 
     Mailer.send(msg).then(() => {
-      this.logger.log(msg);
+      this.logger.log('Email Sent!');
     });
   }
 
-  async sendEmailWithRawHtmlBody(body: string) {
-    const msg = {
-      to: 'akos.madarasz@yahoo.com',
-      from: 'akiasus@outlook.com',
-      subject: 'The following products have price changes',
-      text: 'Price changes',
-      html: body,
-    };
-    Mailer.send(msg)
-      .then(() => {
-        console.log('Email sent');
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
+  // async sendEmailWithRawHtmlBody(body: string) {
+  //   const msg = {
+  //     to: 'akos.madarasz@yahoo.com',
+  //     from: 'akiasus@outlook.com',
+  //     subject: 'The following products have price changes',
+  //     text: 'Price changes',
+  //     html: body,
+  //   };
+  //   Mailer.send(msg)
+  //     .then(() => {
+  //       console.log('Email sent');
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // }
 }

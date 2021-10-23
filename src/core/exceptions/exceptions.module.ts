@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { APP_FILTER } from '@nestjs/core';
-import { LoggerModule } from 'src/logger/logger.module';
+import { LoggerModule } from '../logger/logger.module';
 import { AllExceptionsFilter } from './all-exceptions-filter';
 
 @Module({

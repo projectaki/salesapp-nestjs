@@ -7,10 +7,10 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { ProductCreateInput } from './models/input-types/product-create';
-import { ProductUpdateInput } from './models/input-types/product-update';
-import { Product } from './models/product.model';
-import { ProductService } from './services/product.service';
+import { ProductCreateInput } from '../models/input-types/product-create';
+import { ProductUpdateInput } from '../models/input-types/product-update';
+import { Product } from '../models/product.model';
+import { ProductService } from '../services/product.service';
 
 // In the code first method, a resolver class both defines resolver functions and generates the Query type.
 @Resolver((of) => Product)
@@ -38,4 +38,10 @@ export class ProductsResolver {
     const prod = new Product();
     return await this.productService.update({ ...prod, ...input });
   }
+
+  // @ResolveField()
+  // async posts(@Parent() author: Author) {
+  //   const { id } = author;
+  //   return this.postsService.findAll({ authorId: id });
+  // }
 }

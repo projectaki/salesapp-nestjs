@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { LoggerModule } from 'src/logger/logger.module';
+import { LoggerModule } from '../logger/logger.module';
 import { MailService } from './mail.service';
 
 @Module({
