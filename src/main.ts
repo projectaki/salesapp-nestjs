@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { GqlAuthGuard } from './core/auth/graphql/gql-auth-guard';
 import { LoggingService } from './core/logger/logger.service';
 
 async function bootstrap() {

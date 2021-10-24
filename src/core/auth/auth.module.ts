@@ -10,12 +10,11 @@ import { GqlAuthGuard } from './graphql/gql-auth-guard';
   imports: [PassportModule.register({ defaultStrategy: 'jwt' })],
   providers: [
     JwtStrategy,
-    GqlAuthGuard,
-    // {
-    //   // Global guard for all routes
-    //   provide: APP_GUARD,
-    //   useClass: JwtAuthGuard,
-    // },
+    {
+      // Global guard for all routes, use @Public decorator to open the route
+      provide: APP_GUARD,
+      useClass: GqlAuthGuard,
+    },
     ManagementApiService,
   ],
   exports: [PassportModule, ManagementApiService],
