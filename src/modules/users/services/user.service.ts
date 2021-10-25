@@ -14,19 +14,19 @@ export class UserService {
     return this.userRepository.save(user);
   };
 
-  update = (user: User): Promise<User> => {
-    return this.userRepository.save(user);
+  update = async (user: User): Promise<User> => {
+    const existingUser = await this.userRepository.findOne({
+      authId: user.authId,
+    });
+    const updatedUser = { ...existingUser, ...user };
+    return this.userRepository.save(updatedUser);
   };
 
-  find(id: string): Promise<User> {
-    return this.userRepository.findOne(id);
+  find(params: any): Promise<User> {
+    return this.userRepository.findOne(params);
   }
 
   remove = (user: User): Promise<User> => {
     return this.userRepository.remove(user);
   };
-
-  findByParams(params: any) {
-    return this.userRepository.findOne(params);
-  }
 }

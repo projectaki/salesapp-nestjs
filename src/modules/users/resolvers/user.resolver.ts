@@ -17,14 +17,11 @@ export class UserResolver {
     return this.userService.find(id);
   }
 
+  @Public()
   @Query(() => User)
   async getCurrentUser(@CurrentUser() user: User) {
-    //return this.userService.findByParams({ authId: user.authId });
-    const mockUser = {
-      name: 'Akos',
-      email: 'temp@email.com',
-    };
-    return { ...new User(), ...mockUser };
+    console.log(user);
+    return this.userService.find({ authId: user.authId });
   }
 
   @Mutation(() => User)
@@ -35,10 +32,8 @@ export class UserResolver {
 
   @Mutation(() => User)
   async updateUser(@Args('input') input: UserUpdateInput): Promise<User> {
-    const existingUser = await this.userService.findByParams({
-      authId: input.authId,
-    });
-    return await this.userService.update({ ...existingUser, ...input });
+    const user = new User();
+    return await this.userService.update({ ...user, ...input });
   }
 
   // @ResolveField()
