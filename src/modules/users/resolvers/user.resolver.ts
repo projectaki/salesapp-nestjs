@@ -17,15 +17,17 @@ export class UserResolver {
     return this.userService.find(id);
   }
 
-  @Public()
-  @Query(() => User)
-  async getCurrentUser(@CurrentUser() user: User) {
+  //@Public()
+  @Query(() => User, { nullable: true })
+  async getCurrentUser(@CurrentUser() user) {
     console.log(user);
-    return this.userService.find({ authId: user.authId });
+    return this.userService.find({ authId: user.sub });
   }
 
+  @Public()
   @Mutation(() => User)
   async createUser(@Args('input') input: UserCreateInput): Promise<User> {
+    console.log('here');
     const user = new User();
     return await this.userService.create({ ...user, ...input });
   }
