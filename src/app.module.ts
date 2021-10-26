@@ -1,51 +1,41 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
 import { GraphQLModule } from '@nestjs/graphql';
-import { ProductsModule } from './products/products.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ScrapersModule } from './scrapers/scrapers.module';
-import { SharedModule } from './shared/shared.module';
 import { ScheduleModule } from '@nestjs/schedule';
-import { TaskSchedulerModule } from './task-scheduler/task-scheduler.module';
 import { BullModule } from '@nestjs/bull';
-import { QueueProcessorModule } from './redis-queue-processor/queue-processor.module';
-import { MailModule } from './mail/mail.module';
-import { ConfigModule } from '@nestjs/config';
-import { ExceptionsModule } from './exceptions/exceptions.module';
-import { LoggerModule } from './logger/logger.module';
-import { AuthModule } from './auth/auth.module';
-import { UserModule } from './user/user.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { LoggerModule } from './core/logger/logger.module';
+import { UserModule } from './modules/users/user.module';
+import { ProductsModule } from './modules/products/products.module';
+import { AuthModule } from './core/auth/auth.module';
 
 @Module({
   // Remove the ones that no longer needed after controller refactored
   imports: [
-    ProductsModule,
-    ScrapersModule,
-    QueueProcessorModule,
-    TaskSchedulerModule,
-    MailModule,
-    LoggerModule,
-    ExceptionsModule,
     GraphQLModule.forRoot({
       // debug: false,
       // playground: false,
       autoSchemaFile: true, //In the code first approach, you use decorators and TypeScript classes to generate the corresponding GraphQL schema.
       //autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
-
-    BullModule.forRoot({
-      redis: {
-        host: 'localhost',
-        port: 6379,
-      },
+    BullModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        redis: {
+          host: configService.get('REDIS_HOST'),
+          port: +configService.get('REDIS_PORT'),
+        },
+      }),
+      inject: [ConfigService],
     }),
     TypeOrmModule.forRoot(),
     ScheduleModule.forRoot(),
     ConfigModule.forRoot({ isGlobal: true }),
-    AuthModule,
+    LoggerModule,
     UserModule,
+    ProductsModule,
+    AuthModule,
   ],
-  controllers: [AppController],
   providers: [
     // Below is IOC container in NestJS
     // {
