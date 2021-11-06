@@ -1,25 +1,37 @@
-import { Column, CreateDateColumn, Entity, UpdateDateColumn } from 'typeorm';
 import { Field, ObjectType } from '@nestjs/graphql';
-import { BaseModel } from '../../../core/models/base-model';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+
+export type UserDocument = User & Document;
 
 @ObjectType()
-@Entity({ name: 'users' })
-export class User extends BaseModel {
+@Schema({ timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } })
+export class User {
   @Field()
-  @Column({ length: 100 })
-  authId: string;
+  @Prop({ required: true })
+  _id: string;
 
   @Field()
-  @Column({ length: 500 })
+  @Prop()
+  name: string;
+
+  @Field()
+  @Prop()
   email: string;
 
   @Field()
-  @Column()
-  @CreateDateColumn()
+  @Prop()
   created_at: Date;
 
   @Field()
-  @Column()
-  @UpdateDateColumn()
+  @Prop()
   updated_at: Date;
 }
+
+export const UserSchema = SchemaFactory.createForClass(User);
+
+// For object relations
+// @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Owner' })
+// owner: Owner;
+
+// @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Owner' }] })
+// owner: Owner[];

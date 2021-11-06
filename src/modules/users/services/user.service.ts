@@ -1,32 +1,36 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { User } from '../models/user.model';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { UserCreateInput } from '../models/input-types/user-create-input';
+import { UserUpdateInput } from '../models/input-types/user-update-input';
+import { User, UserDocument } from '../models/user.model';
 
 @Injectable()
 export class UserService {
-  constructor(
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
-  ) {}
+  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-  create = (user: User): Promise<User> => {
-    return this.userRepository.save(user);
+  create = async (user: UserCreateInput): Promise<User> => {
+    const createdUser = new this.userModel(user);
+    return createdUser.save();
   };
 
-  update = async (user: User): Promise<User> => {
-    const existingUser = await this.userRepository.findOne({
-      authId: user.authId,
-    });
-    const updatedUser = { ...existingUser, ...user };
-    return this.userRepository.save(updatedUser);
+  update = async (user: UserUpdateInput): Promise<User> => {
+    const { _id, ...updateModel } = user;
+    const updated = await this.userModel
+      .findByIdAndUpdate(_id, updateModel, { new: true })
+      .exec();
+    return updated;
   };
 
-  find(params: any): Promise<User> {
-    return this.userRepository.findOne(params);
-  }
-
-  remove = (user: User): Promise<User> => {
-    return this.userRepository.remove(user);
+  findById = async (id: string): Promise<User> => {
+    return await this.userModel.findById(id).exec();
   };
+
+  // find = async (params: any): Promise<User> => {
+  //   return this.userModel.findOne(params).exec();
+  // };
+
+  // remove = async (user: User): Promise<User> => {
+  //   return this.userModel.remove(user).exec();
+  // };
 }

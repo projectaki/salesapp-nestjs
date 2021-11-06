@@ -1,4 +1,4 @@
-import { Global, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Mailer from '@sendgrid/mail';
 import { Product } from '../../modules/products/models/product.model';
