@@ -10,14 +10,12 @@ import { ProductService } from '../services/product.service';
 export class ProductsResolver {
   constructor(private productService: ProductService) {}
 
-  @Public()
   @Query(() => Product, { name: 'product' }) // param => supply a parent object used by field resolver functions as they traverse down through an object graph
   async getProduct(@Args('id') id: string) {
     // args can be called multiple times, and seperated into a seperate file to avoid bloating
     return await this.productService.findById(id);
   }
 
-  @Public()
   @Mutation(() => Product)
   async createProduct(
     @Args('input') input: ProductCreateInput,
@@ -25,7 +23,6 @@ export class ProductsResolver {
     return await this.productService.create(input);
   }
 
-  @Public()
   @Mutation(() => Product)
   async updateProduct(
     @Args('input') input: ProductUpdateInput,

@@ -15,25 +15,23 @@ export class UserResolver {
     private mgtApi: ManagementApiService,
   ) {}
 
-  @Public()
   @Query(() => User, { name: 'user' })
   async getUser(@Args('id') id: string) {
     return this.userService.findById(id);
   }
 
-  @Public()
   @Query(() => User, { nullable: true })
   async getCurrentUser(@CurrentUser() user) {
+    console.log('user', user);
     return this.userService.findById(user.sub);
   }
 
-  @Public()
   @Mutation(() => User)
   async createUser(@Args('input') input: UserCreateInput): Promise<User> {
+    console.log('input', input);
     return await this.userService.create(input);
   }
 
-  @Public()
   @Mutation(() => User)
   async updateUser(@Args('input') input: UserUpdateInput): Promise<User> {
     return await this.userService.update(input);
