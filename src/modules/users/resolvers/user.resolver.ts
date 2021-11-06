@@ -22,13 +22,11 @@ export class UserResolver {
 
   @Query(() => User, { nullable: true })
   async getCurrentUser(@CurrentUser() user) {
-    console.log('user', user);
     return this.userService.findById(user.sub);
   }
 
   @Mutation(() => User)
   async createUser(@Args('input') input: UserCreateInput): Promise<User> {
-    console.log('input', input);
     return await this.userService.create(input);
   }
 

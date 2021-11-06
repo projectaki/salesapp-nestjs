@@ -26,7 +26,7 @@ export class ManagementApiService {
         email,
         connection: 'Username-Password-Authentication',
       })
-      .then((x) => console.log(x));
+      .then();
   };
 
   updatePreferences(id: string, metadata: any) {
