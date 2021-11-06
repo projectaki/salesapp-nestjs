@@ -6,7 +6,6 @@ export type ProductDocument = Product & Document;
 @Schema({ timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } })
 @ObjectType()
 export class Product {
-  @Prop()
   @Field()
   _id: string;
 
@@ -31,8 +30,8 @@ export class Product {
   updated_at: Date;
 
   @Prop()
-  @Field()
-  img_url: string;
+  @Field({ nullable: true })
+  img_url?: string;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

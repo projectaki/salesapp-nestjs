@@ -12,14 +12,25 @@ export class ProductService {
   ) {}
 
   create = async (product: ProductCreateInput): Promise<Product> => {
-    const createdProduct = new this.productModel(product);
+    const prodWithPrevPriceSet: Product = {
+      ...new Product(),
+      ...product,
+      previous_price: product.price,
+    };
+    const createdProduct = new this.productModel(prodWithPrevPriceSet);
     return await createdProduct.save();
   };
 
   update = async (product: ProductUpdateInput): Promise<Product> => {
     const { _id, ...updateModel } = product;
+    const found = await this.productModel.findById(_id);
+
     const updated = await this.productModel
-      .findByIdAndUpdate(_id, updateModel, { new: true })
+      .findByIdAndUpdate(
+        _id,
+        { ...updateModel, previous_price: found.price },
+        { new: true },
+      )
       .exec();
     return updated;
   };
