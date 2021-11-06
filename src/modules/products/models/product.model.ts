@@ -1,38 +1,41 @@
 import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
+export type ProductDocument = Product & Document;
+
+@Schema({ timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } })
 @ObjectType()
-@Entity({ name: 'products' })
 export class Product {
-  id: string;
+  @Prop()
+  @Field()
+  _id: string;
+
+  @Prop()
+  @Field()
   name: string;
-  @Field((type) => Int)
-  @Column()
+
+  @Prop()
+  @Field(() => Int)
   price: number;
 
-  @Field((type) => Int)
-  @Column({ default: 0 })
+  @Prop()
+  @Field(() => Int)
   previous_price: number;
 
+  @Prop()
   @Field()
-  @Column()
-  @CreateDateColumn()
   created_at: Date;
 
+  @Prop()
   @Field()
-  @Column()
-  @UpdateDateColumn()
   updated_at: Date;
 
+  @Prop()
+  @Field()
   img_url: string;
 }
 
+export const ProductSchema = SchemaFactory.createForClass(Product);
 // @Field(type => [InvoiceModel], { nullable: true })
 // @OneToMany(type => InvoiceModel, invoice => invoice.customer)
 // invoices: InvoiceModel[]

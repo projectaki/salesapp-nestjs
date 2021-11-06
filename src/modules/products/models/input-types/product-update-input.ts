@@ -7,5 +7,5 @@ export class ProductUpdateInput
   implements Partial<ProductCreateInput>
 {
   @Field()
-  id: string;
+  _id: string;
 }

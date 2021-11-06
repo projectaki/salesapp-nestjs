@@ -17,7 +17,7 @@ export class UserService {
   update = async (user: UserUpdateInput): Promise<User> => {
     const { _id, ...updateModel } = user;
     const updated = await this.userModel
-      .findByIdAndUpdate(user._id, updateModel, { new: true })
+      .findByIdAndUpdate(_id, updateModel, { new: true })
       .exec();
     return updated;
   };
