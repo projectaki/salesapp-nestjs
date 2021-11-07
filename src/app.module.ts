@@ -7,6 +7,7 @@ import { UserModule } from './modules/users/user.module';
 import { ProductsModule } from './modules/products/products.module';
 import { AuthModule } from './core/auth/auth.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { AppController } from './app.controller';
 
 @Module({
   // Remove the ones that no longer needed after controller refactored
@@ -38,5 +39,6 @@ import { MongooseModule } from '@nestjs/mongoose';
     //   useClass: Implementation,
     // },
   ],
+  controllers: [AppController],
 })
 export class AppModule {}
