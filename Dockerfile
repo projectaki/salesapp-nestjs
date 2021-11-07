@@ -19,6 +19,8 @@ RUN npm run build
 
 FROM node:15.4 as production
 
+EXPOSE 3000
+
 WORKDIR /usr/src/app
 
 COPY package*.json ./
