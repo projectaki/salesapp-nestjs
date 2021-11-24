@@ -1,7 +1,7 @@
 FROM node:15.4 as development
 
 # Create app directory
-WORKDIR /usr/src/app
+WORKDIR /app
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
@@ -21,12 +21,12 @@ FROM node:15.4 as production
 
 EXPOSE 3000
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
 COPY package*.json ./
 
 RUN npm install --only=production
 
-COPY --from=development /usr/src/app/dist ./dist
+COPY --from=development /app/dist ./dist
 
 CMD [ "node", "dist/main" ]
