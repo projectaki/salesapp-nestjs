@@ -1,0 +1,34 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    name: Run unit tests
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: setup Node
+      uses: actions/setup-node@v1
+      with:
+        node-version: 14
+    - name: npm install, build and test
+      run: |
+        npm install
+        npm run build
+        npm test
+      
+
+  build:
+    name: Build docker Image
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag sales-app:$(date +%s)
