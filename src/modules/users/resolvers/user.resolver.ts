@@ -26,6 +26,18 @@ export class UserResolver {
   }
 
   @Mutation(() => User)
+  async createOrUpdateUser(@CurrentUser() user): Promise<User> {
+    const userObject = {
+      _id: user.sub,
+      name: user.name,
+      email: user.email,
+    };
+    const foundUser = this.userService.findById(user.sub);
+    if (foundUser) return await this.userService.update(userObject);
+    else return await this.userService.create(userObject);
+  }
+
+  @Mutation(() => User)
   async createUser(@Args('input') input: UserCreateInput): Promise<User> {
     return await this.userService.create(input);
   }
