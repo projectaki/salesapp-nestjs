@@ -8,6 +8,6 @@ async function bootstrap() {
   });
   app.useLogger(app.get(LoggingService));
   app.enableCors();
-  await app.listen(3000);
+  await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
