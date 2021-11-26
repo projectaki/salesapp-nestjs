@@ -26,15 +26,19 @@ export class UserResolver {
   }
 
   @Mutation(() => User)
-  async createOrUpdateUser(@CurrentUser() user): Promise<User> {
-    const userObject = {
-      _id: user.sub,
-      name: user.name,
-      email: user.email,
-    };
-    const foundUser = this.userService.findById(user.sub);
-    if (foundUser) return await this.userService.update(userObject);
-    else return await this.userService.create(userObject);
+  async createOrUpdateUser(
+    @Args('input') input: UserUpdateInput,
+  ): Promise<User> {
+    const foundUser = await this.userService.findById(input._id);
+    if (foundUser) return await this.userService.update(input);
+    else {
+      const createInput = {
+        _id: input._id,
+        name: input.name,
+        email: input.email,
+      };
+      return await this.userService.create(createInput);
+    }
   }
 
   @Mutation(() => User)
