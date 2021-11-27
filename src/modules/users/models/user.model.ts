@@ -1,5 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { UserMetadata } from './user-metadata';
 
 export type UserDocument = User & Document;
 
@@ -17,6 +18,10 @@ export class User {
   @Field()
   @Prop()
   email: string;
+
+  @Field(() => UserMetadata)
+  @Prop(UserMetadata)
+  user_metadata: UserMetadata;
 
   @Field()
   @Prop()
