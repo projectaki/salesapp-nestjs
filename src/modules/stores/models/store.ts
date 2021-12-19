@@ -1,13 +1,11 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { UserMetadata } from './user-metadata';
-import * as mongoose from 'mongoose';
 
-export type UserDocument = User & Document;
+export type StoreDocument = Store & Document;
 
 @ObjectType()
 @Schema({ timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } })
-export class User {
+export class Store {
   @Field()
   @Prop({ required: true })
   _id: string;
@@ -18,15 +16,7 @@ export class User {
 
   @Field()
   @Prop()
-  email: string;
-
-  @Field()
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Store' }] })
-  subscriptions: string[];
-
-  @Field(() => UserMetadata)
-  @Prop(UserMetadata)
-  user_metadata: UserMetadata;
+  logoUrl: string;
 
   @Field()
   @Prop()
@@ -37,7 +27,7 @@ export class User {
   updated_at: Date;
 }
 
-export const UserSchema = SchemaFactory.createForClass(User);
+export const StoreSchema = SchemaFactory.createForClass(Store);
 
 // For object relations
 // @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Owner' })

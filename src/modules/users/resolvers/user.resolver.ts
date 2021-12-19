@@ -1,14 +1,25 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { CurrentUser } from 'src/core/auth/graphql/current-user-decorator';
 import { UserCreateInput } from '../models/input-types/user-create-input';
 import { UserUpdateInput } from '../models/input-types/user-update-input';
 import { User } from '../models/user.model';
 import { UserService } from '../services/user.service';
 import { Public } from 'src/core/auth/public-route-decorator';
+import { StoreService } from 'src/modules/stores/services/store.service';
 
 @Resolver(() => User)
 export class UserResolver {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private storeService: StoreService,
+  ) {}
 
   @Query(() => User, { name: 'user' })
   async getUser(@Args('id') id: string) {
@@ -49,6 +60,12 @@ export class UserResolver {
   @Mutation(() => User)
   async updateUser(@Args('input') input: UserUpdateInput): Promise<User> {
     return await this.userService.update(input);
+  }
+
+  @ResolveField()
+  async subscriptions(@Parent() user: User) {
+    const { subscriptions } = user;
+    return this.storeService.getByIds(subscriptions);
   }
 
   // @ResolveField()
