@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 export type StoreDocument = Store & Document;
@@ -7,24 +7,23 @@ export type StoreDocument = Store & Document;
 @Schema({ timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } })
 export class Store {
   @Field()
-  @Prop({ required: true })
-  _id: string;
+  _id?: string;
 
   @Field()
   @Prop()
   name: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Prop()
   logoUrl: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Prop()
-  created_at: Date;
+  created_at?: Date;
 
-  @Field()
+  @Field({ nullable: true })
   @Prop()
-  updated_at: Date;
+  updated_at?: Date;
 }
 
 export const StoreSchema = SchemaFactory.createForClass(Store);

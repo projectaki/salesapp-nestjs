@@ -23,7 +23,11 @@ export class UserService {
   };
 
   findById = async (id: string): Promise<User> => {
-    return await this.userModel.findById(id).exec();
+    const res = await this.userModel
+      .findById(id)
+      //.populate('subscriptions')
+      .exec();
+    return res;
   };
 
   // find = async (params: any): Promise<User> => {

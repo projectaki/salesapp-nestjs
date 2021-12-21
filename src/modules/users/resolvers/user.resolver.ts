@@ -21,9 +21,12 @@ export class UserResolver {
     private storeService: StoreService,
   ) {}
 
+  @Public()
   @Query(() => User, { name: 'user' })
   async getUser(@Args('id') id: string) {
-    return this.userService.findById(id);
+    const res = await this.userService.findById(id);
+    console.log(res);
+    return res;
   }
 
   @Query(() => User, { nullable: true })
@@ -64,8 +67,10 @@ export class UserResolver {
 
   @ResolveField()
   async subscriptions(@Parent() user: User) {
-    const { subscriptions } = user;
-    return this.storeService.getByIds(subscriptions);
+    const subscriptions = await this.storeService.getByIds(
+      user.subscriptions.map((x) => x._id),
+    );
+    return subscriptions;
   }
 
   // @ResolveField()
