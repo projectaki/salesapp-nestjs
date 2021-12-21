@@ -8,10 +8,8 @@ import {
 import { Store } from '../store';
 
 @InputType()
-export class StoreCreateInput {
-  @Field()
-  name: string;
-
-  @Field()
-  logoUrl: string;
-}
+export class StoreCreateInput extends PickType(
+  Store,
+  ['name', 'logoUrl'],
+  InputType,
+) {}

@@ -7,26 +7,29 @@ import { Store } from 'src/modules/stores/models/store';
 export type UserDocument = User & Document;
 
 @ObjectType()
-@Schema({ timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } })
+@Schema({
+  timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
+  versionKey: false,
+})
 export class User {
   @Field()
   @Prop({ required: true })
   _id: string;
 
   @Field()
-  @Prop()
+  @Prop({ required: true })
   name: string;
 
   @Field()
-  @Prop()
+  @Prop({ required: true, unique: true })
   email: string;
 
   @Field(() => [Store])
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: Store.name }] })
   subscriptions: Store[];
 
-  @Field(() => UserMetadata, { nullable: true })
-  @Prop(UserMetadata)
+  @Field(() => UserMetadata)
+  @Prop({ type: UserMetadata, default: () => ({}), _id: false })
   user_metadata: UserMetadata;
 
   @Field()
