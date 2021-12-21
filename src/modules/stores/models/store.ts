@@ -5,7 +5,7 @@ export type StoreDocument = Store & Document;
 
 @ObjectType()
 @Schema({
-  timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
+  // timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
   versionKey: false,
 })
 export class Store {
@@ -20,13 +20,13 @@ export class Store {
   @Prop({ required: true })
   logoUrl: string;
 
-  @Field({ nullable: true })
-  @Prop()
-  created_at?: Date;
+  // @Field({ nullable: true })
+  // @Prop()
+  // created_at?: Date;
 
-  @Field({ nullable: true })
-  @Prop()
-  updated_at?: Date;
+  // @Field({ nullable: true })
+  // @Prop()
+  // updated_at?: Date;
 }
 
 export const StoreSchema = SchemaFactory.createForClass(Store);

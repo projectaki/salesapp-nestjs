@@ -22,11 +22,12 @@ export class UserService {
     return updated;
   };
 
-  findById = async (id: string): Promise<User> => {
-    const res = await this.userModel
-      .findById(id)
-      //.populate('subscriptions')
-      .exec();
+  findById = async (id: string, paths: string[] = []): Promise<User> => {
+    const pathsWithoutRefs = paths.filter(
+      (x) => !x.startsWith('subscriptions'),
+    );
+    pathsWithoutRefs.push('subscriptions');
+    const res = await this.userModel.findById(id, pathsWithoutRefs).exec();
     return res;
   };
 

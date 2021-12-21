@@ -1,5 +1,7 @@
 import {
   Args,
+  Context,
+  Info,
   Mutation,
   Parent,
   Query,
@@ -13,6 +15,7 @@ import { User } from '../models/user.model';
 import { UserService } from '../services/user.service';
 import { Public } from 'src/core/auth/public-route-decorator';
 import { StoreService } from 'src/modules/stores/services/store.service';
+import { GqlQueryPipe } from 'src/core/pipes/gql-query.pipe';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -23,9 +26,8 @@ export class UserResolver {
 
   @Public()
   @Query(() => User, { name: 'user' })
-  async getUser(@Args('id') id: string) {
-    const res = await this.userService.findById(id);
-    console.log(res);
+  async getUser(@Args('id') id: string, @Info(GqlQueryPipe) paths) {
+    const res = await this.userService.findById(id, paths);
     return res;
   }
 
@@ -38,7 +40,6 @@ export class UserResolver {
   async createOrUpdateUser(
     @Args('input') input: UserUpdateInput,
   ): Promise<User> {
-    console.log('input', input);
     const foundUser = await this.userService.findById(input._id);
     if (foundUser) return await this.userService.update(input);
     else {
@@ -47,7 +48,6 @@ export class UserResolver {
         name: input.name,
         email: input.email,
       };
-      console.log('create', createInput);
 
       return await this.userService.create(createInput);
     }
@@ -66,9 +66,10 @@ export class UserResolver {
   }
 
   @ResolveField()
-  async subscriptions(@Parent() user: User) {
+  async subscriptions(@Parent() user: User, @Info(GqlQueryPipe) paths) {
     const subscriptions = await this.storeService.getByIds(
       user.subscriptions.map((x) => x._id),
+      paths,
     );
     return subscriptions;
   }

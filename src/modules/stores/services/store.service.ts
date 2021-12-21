@@ -13,7 +13,8 @@ export class StoreService {
     return await this.storeModel.find({}).exec();
   };
 
-  getByIds = async (ids: string[]): Promise<Store[]> => {
-    return await this.storeModel.find({ _id: { $in: ids } });
+  getByIds = async (ids: string[], paths: string[] = []): Promise<Store[]> => {
+    const res = await this.storeModel.find({ _id: { $in: ids } }, paths);
+    return res;
   };
 }
