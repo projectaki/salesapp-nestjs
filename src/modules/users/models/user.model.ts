@@ -3,6 +3,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { UserMetadata } from './user-metadata';
 import * as mongoose from 'mongoose';
 import { Store } from 'src/modules/stores/models/store';
+import { StoreSubscription } from './store-subscription';
 
 export type UserDocument = User & Document;
 
@@ -24,9 +25,11 @@ export class User {
   @Prop({ required: true, unique: true })
   email: string;
 
-  @Field(() => [Store])
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: Store.name }] })
-  subscriptions: Store[];
+  @Field(() => [StoreSubscription])
+  @Prop({
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: Store.name }],
+  })
+  subscriptions: StoreSubscription[];
 
   @Field(() => UserMetadata)
   @Prop({ type: UserMetadata, default: () => ({}), _id: false })

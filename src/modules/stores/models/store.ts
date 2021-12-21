@@ -16,16 +16,16 @@ export class Store {
   @Prop({ required: true })
   name: string;
 
-  @Field({ nullable: true })
+  @Field()
   @Prop({ required: true })
   logoUrl: string;
 
-  @Field()
-  @Prop({ required: true })
+  @Field({ nullable: true })
+  @Prop()
   created_at?: Date;
 
-  @Field()
-  @Prop({ required: true })
+  @Field({ nullable: true })
+  @Prop()
   updated_at?: Date;
 }
 
