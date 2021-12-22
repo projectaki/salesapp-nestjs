@@ -3,7 +3,6 @@ import { PipeTransform, Injectable, ArgumentMetadata } from '@nestjs/common';
 @Injectable()
 export class GqlQueryPipe implements PipeTransform {
   transform(value: any, metadata: ArgumentMetadata) {
-    console.log('meta', metadata);
     const fields = value?.fieldNodes[0]?.selectionSet?.selections;
     if (!fields) return [];
     const res = [];
