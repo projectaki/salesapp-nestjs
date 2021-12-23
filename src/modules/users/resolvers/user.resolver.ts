@@ -25,32 +25,15 @@ export class UserResolver {
   ) {}
 
   @Public()
-  @Query(() => User, { name: 'user' })
-  async getUser(@Args('id') id: string, @Info(GqlQueryPipe) paths) {
+  @Query(() => User)
+  async user(@Args('id') id: string, @Info(GqlQueryPipe) paths) {
     const res = await this.userService.findById(id, paths);
     return res;
   }
 
   @Query(() => User, { nullable: true })
-  async getCurrentUser(@CurrentUser() user) {
-    return this.userService.findById(user.sub);
-  }
-
-  @Mutation(() => User)
-  async createOrUpdateUser(
-    @Args('input') input: UserUpdateInput,
-  ): Promise<User> {
-    const foundUser = await this.userService.findById(input._id);
-    if (foundUser) return await this.userService.update(input);
-    else {
-      const createInput = {
-        _id: input._id,
-        name: input.name,
-        email: input.email,
-      };
-
-      return await this.userService.create(createInput);
-    }
+  async authUser(@CurrentUser() user, @Info(GqlQueryPipe) paths) {
+    return this.userService.findById(user.sub, paths);
   }
 
   @Public()
@@ -61,22 +44,16 @@ export class UserResolver {
 
   @Public()
   @Mutation(() => User)
-  async updateUser(@Args('input') input: UserUpdateInput): Promise<User> {
+  async saveUser(@Args('input') input: UserUpdateInput): Promise<User> {
     return await this.userService.update(input);
   }
 
   @ResolveField()
   async subscriptions(@Parent() user: User, @Info(GqlQueryPipe) paths) {
     const subscriptions = await this.storeService.getByIds(
-      user.subscriptions.map((x) => x._id),
+      user.subscriptions?.map((x) => x._id),
       paths,
     );
     return subscriptions;
   }
-
-  // @ResolveField()
-  // async posts(@Parent() author: Author) {
-  //   const { id } = author;
-  //   return this.postsService.findAll({ authorId: id });
-  // }
 }

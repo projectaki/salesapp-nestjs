@@ -13,14 +13,14 @@ export class UserService extends BaseService {
   }
 
   create = async (user: UserCreateInput): Promise<User> => {
-    const createdUser = new this.userModel(user);
-    return createdUser.save();
+    const createdUser = await this.userModel.create(user);
+    return createdUser;
   };
 
   update = async (user: UserUpdateInput): Promise<User> => {
     const { _id, ...updateModel } = user;
     const updated = await this.userModel
-      .findByIdAndUpdate(_id, updateModel, { new: true })
+      .findByIdAndUpdate(_id, updateModel, { new: true, upsert: true })
       .exec();
     return updated;
   };
@@ -36,12 +36,4 @@ export class UserService extends BaseService {
     const res = await this.userModel.findById(id, filteredProjections).exec();
     return res;
   };
-
-  // find = async (params: any): Promise<User> => {
-  //   return this.userModel.findOne(params).exec();
-  // };
-
-  // remove = async (user: User): Promise<User> => {
-  //   return this.userModel.remove(user).exec();
-  // };
 }
