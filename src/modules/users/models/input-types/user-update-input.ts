@@ -1,9 +1,14 @@
-import { Field, InputType, PartialType } from '@nestjs/graphql';
+import { Field, InputType, OmitType, PartialType } from '@nestjs/graphql';
+
+import { UserMetadata } from '../user-metadata';
 import { User } from '../user.model';
-import { UserCreateInput } from './user-create-input';
+import { StoreSubscriptionInput } from './store-subscription-input';
 
 @InputType()
-export class UserUpdateInput extends PartialType(UserCreateInput) {
-  @Field()
-  _id: string;
+export class UserUpdateInput extends PartialType(
+  OmitType(User, ['subscriptions', 'created_at', 'updated_at']),
+  InputType,
+) {
+  @Field(() => [StoreSubscriptionInput], { nullable: true })
+  subscriptions: StoreSubscriptionInput[];
 }

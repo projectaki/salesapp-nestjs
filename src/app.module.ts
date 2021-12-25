@@ -8,6 +8,7 @@ import { ProductsModule } from './modules/products/products.module';
 import { AuthModule } from './core/auth/auth.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
+import { StoresModule } from './modules/stores/stores.module';
 
 @Module({
   // Remove the ones that no longer needed after controller refactored
@@ -30,6 +31,7 @@ import { AppController } from './app.controller';
     LoggerModule,
     UserModule,
     ProductsModule,
+    StoresModule,
     AuthModule,
   ],
   providers: [

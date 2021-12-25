@@ -24,7 +24,14 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  validate(payload: unknown): unknown {
+  /**
+   * If we want to add additional claims to the user we can do it here
+   * @param payload User object extracted from access token
+   * @returns Returns new user object which will be added to the request as req.user
+   */
+  async validate(payload: any): Promise<unknown> {
+    // payload.customClaim = 'Custom';
+    // console.log('payload', payload);
     return payload;
   }
 }
