@@ -36,16 +36,17 @@ export class UserResolver {
     return this.userService.findById(user.sub, paths);
   }
 
-  @Public()
   @Mutation(() => User)
   async createUser(@Args('input') input: UserCreateInput): Promise<User> {
     return await this.userService.create(input);
   }
 
-  @Public()
   @Mutation(() => User)
-  async saveUser(@Args('input') input: UserUpdateInput): Promise<User> {
-    return await this.userService.update(input);
+  async saveUser(
+    @CurrentUser() user,
+    @Args('input') input: UserUpdateInput,
+  ): Promise<User> {
+    return await this.userService.update({ ...input, _id: user.sub });
   }
 
   @ResolveField()
@@ -62,7 +63,6 @@ export class UserResolver {
     @CurrentUser() user,
     @Args('_id') _id: string,
   ): Promise<User> {
-    console.log(user);
     return await this.userService.addSubscription(_id, user.sub);
   }
 
