@@ -1,6 +1,6 @@
 import { MongoFilterOptions } from '../interfaces/mongo-filter-options';
 
-export abstract class BaseService {
+export class BaseService {
   /**
    * Takes a list of fields that is coming from graphql, and the mongodb schema,
    * and filters for the fields which are not a reference to a different document

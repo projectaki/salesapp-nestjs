@@ -36,4 +36,26 @@ export class UserService extends BaseService {
     const res = await this.userModel.findById(id, filteredProjections).exec();
     return res;
   };
+
+  addSubscription = async (_id: string, _userId: string): Promise<User> => {
+    const res = await this.userModel.findByIdAndUpdate(
+      _userId,
+      {
+        $addToSet: { subscriptions: _id },
+      },
+      { new: true },
+    );
+    return res;
+  };
+
+  removeSubscription = async (_id: string, _userId: string): Promise<User> => {
+    const res = await this.userModel.findByIdAndUpdate(
+      _userId,
+      {
+        $pull: { subscriptions: _id },
+      },
+      { new: true },
+    );
+    return res;
+  };
 }

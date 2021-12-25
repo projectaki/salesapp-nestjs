@@ -56,4 +56,21 @@ export class UserResolver {
     );
     return subscriptions;
   }
+
+  @Mutation(() => User)
+  async addSubscription(
+    @CurrentUser() user,
+    @Args('_id') _id: string,
+  ): Promise<User> {
+    console.log(user);
+    return await this.userService.addSubscription(_id, user.sub);
+  }
+
+  @Mutation(() => User)
+  async removeSubscription(
+    @CurrentUser() user,
+    @Args('_id') _id: string,
+  ): Promise<User> {
+    return await this.userService.removeSubscription(_id, user.sub);
+  }
 }
